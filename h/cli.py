@@ -1,8 +1,77 @@
+"""Main CLI application for h-cli.
+
+This module serves as the entry point for the h-cli tool.
+It provides a plugin-based architecture for extending functionality.
+"""
+import os
+from typing import Optional
+
+import typer
+import structlog
+
+from .plugins.git import app as git_app
+
+# Initialize logger
+logger = structlog.get_logger()
+
+def create_app() -> typer.Typer:
+    """Create and configure the main CLI application.
+    
+    Returns:
+        Configured Typer application
+    """
+    app = typer.Typer(
+        help="h-cli: A productivity CLI tool",
+        no_args_is_help=True,
+    )
+    
+    # Add git commands with shorter alias
+    app.add_typer(git_app, name="gp")
+    
+    return app
+
+def get_app() -> typer.Typer:
+    """Get the main CLI application instance.
+    
+    This is the main entry point for the CLI tool.
+    
+    Returns:
+        Configured Typer application
+    """
+    app = create_app()
+    
+    @app.callback()
+    def main(
+        verbose: bool = typer.Option(
+            False,
+            "--verbose",
+            "-v",
+            help="Enable verbose logging",
+        ),
+    ) -> None:
+        """h-cli: A productivity CLI tool.
+        
+        This tool provides various productivity enhancements through a plugin system.
+        """
+        # Configure logging based on verbosity
+        log_level = "DEBUG" if verbose else "INFO"
+        structlog.configure(
+            wrapper_class=structlog.make_filtering_bound_logger(log_level),
+        )
+        
+        # Store logger in context for plugins to use
+        typer.get_current_context().obj = {"logger": logger}
+    
+    return app
+
+app = get_app()
+
+if __name__ == "__main__":
+    app()
 """Main CLI entry point for the h-cli tool."""
 
 from typing import Any, Dict, Optional
 
-import structlog
 import typer
 from rich.console import Console
 
@@ -19,7 +88,7 @@ app = typer.Typer(
 )
 
 # Add plugins
-app.add_typer(git_app, name="git", help="Git helper commands")
+app.add_typer(git_app, name="gp")
 
 console = Console()
 logger = setup_logger()
