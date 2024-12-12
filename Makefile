@@ -26,14 +26,6 @@ install-global: clean  ## Install h-cli globally using pipx
 		{ echo "pipx is not installed. Installing..."; \
 		python3 -m pip install --user pipx; \
 		python3 -m pipx ensurepath; }
-	@pipx install --editable .
-
-install-global-force: clean  ## Install h-cli globally using pipx (force)
-	$(INFO) "Installing h-cli globally..."
-	@command -v pipx >/dev/null 2>&1 || \
-		{ echo "pipx is not installed. Installing..."; \
-		python3 -m pip install --user pipx; \
-		python3 -m pipx ensurepath; }
 	@pipx install --force --editable .
 
 uninstall-global:  ## Uninstall h-cli globally

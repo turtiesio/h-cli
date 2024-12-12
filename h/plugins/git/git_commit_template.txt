@@ -1,5 +1,3 @@
-PROMPT TITLE: Git Commit Message Generator
-
 TARGET OBJECTIVE:
 Generate clear, consistent, and informative Git commit messages that effectively communicate code changes while following established best practices and conventional commits specification.
 
@@ -82,17 +80,8 @@ OPTIMIZATION NOTES:
 4. Include relevant context for future reference
 5. Consider adding co-author tags for pair programming
 
-Write in Korean
+Write in Korean and markdown
 
--- git status --
-$GIT_STATUS
+Here is the actual git current state:
 
--- git diff --
-$GIT_DIFF_CONTENT
-
--- git log(recent 5) --
-$GIT_LOG_RECENT
-
--- project structure --
-$TREE_OUTPUT
-
+----------------------------------------------
