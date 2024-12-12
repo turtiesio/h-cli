@@ -1,0 +1,26 @@
+# This is my productivity improvement project
+
+## Languages
+
+- python(use uv, uvx)
+- shell(bash with error handling)
+- Docker (Dockerfile, docker-compose.yml for infra)
+
+## File structure
+
+- app: application
+- packages: shared packages
+- infra: infra
+- scripts
+
+## Rules
+
+- Update README to apply changes
+- SOLID, DRY, KISS, YAGNI, Clean architecure(put same entity in same folder), MVC(Model View Controller)
+- Makefile for common commands
+- JSON Logging with structlog
+- gitignore
+- no hard coding
+- Unit test(e.g. hello.py, hello.test.py)
+- use config file. no env directly.
+- Docstring or JSDoc for every function

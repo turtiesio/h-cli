@@ -1,0 +1,13 @@
+# Default configuration for h-cli
+app:
+  name: h-cli
+  version: 0.1.0
+
+# Plugin configurations
+plugins:
+  enabled: []  # List of enabled plugins
+
+# Logging configuration
+logging:
+  level: INFO
+  format: "%(asctime)s %(name)s %(levelname)s %(message)s"
