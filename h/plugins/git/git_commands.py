@@ -82,7 +82,7 @@ class GitCommands:
             최근 커밋 로그 목록
         """
         logs = self.run_command(
-            ["log", f"-{count}", "--oneline", "--no-merges"]
+            ["log", f"-{count}", "--no-merges"]
         ).splitlines()
         return logs if logs else ["No commit history"]
 
