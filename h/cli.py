@@ -1,14 +1,18 @@
 """Main CLI entry point for the h-cli tool."""
 
-from typing import Any, Dict, Optional, List
+from typing import Any, Callable, Dict, Optional, Tuple
+
 import typer
+from click import get_current_context
 from rich.console import Console
-import os
-import fnmatch
+
 from h.config import load_config
 from h.logger import setup_logger
-from click import get_current_context
-from h.plugins.git.git_plugin_functions import get_git_commands, get_template_content, open_in_vscode, prompt, list_files
+from h.plugins.git.functions import (
+    git_commit_msg_prompt,
+    git_commit_msg_prompt_options,
+    git_tree,
+)
 
 app = typer.Typer(
     name="h",
@@ -20,6 +24,12 @@ app = typer.Typer(
 
 console = Console()
 logger = setup_logger()
+
+# with function itself. and typer options decorator
+# commands: Dict[str, Tuple[str, Callable[..., Any]]] = {
+#     "git-prompt": (git_commit_msg_prompt, git_commit_msg_prompt_options()),
+#     "git-list-files": (git_tree, git_commit_msg_prompt_options()),
+# }
 
 
 def get_context_data() -> Dict[str, Any]:
@@ -78,22 +88,19 @@ def version() -> None:
     logger.info("cli.version", version=__version__)
     console.print(f"h-cli version: {__version__}")
 
-@app.command("git-prompt")
-def git_prompt_command(
-    log_count: int = typer.Option(
-        5, "--logs", "-l", help="Number of recent logs to show"
-    ),
-    tree_depth: int = typer.Option(
-        3, "--depth", "-d", help="Maximum depth for directory tree"
-    ),
-):
-    """커밋 메시지 생성을 위한 프롬프트 생성."""
-    return prompt(log_count=log_count, tree_depth=tree_depth)
 
-@app.command("git-list-files")
-def git_list_files_command():
-    """List files in the git repository."""
-    return list_files()
+@git_commit_msg_prompt_options()
+@app.command()
+def gp(log_count: int = 5, tree_depth: int = 3) -> None:
+    """깃 커밋 메시지 프롬프트 생성 및 저장."""
+    return git_commit_msg_prompt(log_count=log_count, tree_depth=tree_depth)
+
+
+@app.command()
+def gt() -> None:
+    """깃 프로젝트 파일 트리 출력."""
+    return git_tree()
+
 
 if __name__ == "__main__":
     app()

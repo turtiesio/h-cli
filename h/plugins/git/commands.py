@@ -81,9 +81,7 @@ class GitCommands:
         Returns:
             최근 커밋 로그 목록
         """
-        logs = self.run_command(
-            ["log", f"-{count}", "--no-merges"]
-        ).splitlines()
+        logs = self.run_command(["log", f"-{count}", "--no-merges"]).splitlines()
         return logs if logs else ["No commit history"]
 
     def get_directory_tree(self, depth: int = 3) -> str:
@@ -96,7 +94,9 @@ class GitCommands:
             디렉토리 트리 문자열
         """
         try:
-            return self.run_command(["ls-tree", "--full-tree", "-r", "HEAD", "--name-only"])
+            return self.run_command(
+                ["ls-tree", "--full-tree", "-r", "HEAD", "--name-only"]
+            )
         except GitError:
             return "Could not generate directory tree"
 
