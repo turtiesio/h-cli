@@ -8,10 +8,9 @@ from rich.console import Console
 
 from h.config import load_config
 from h.logger import setup_logger
-from h.plugins.git.functions import (
-    git_commit_msg_prompt,
-    git_commit_msg_prompt_options,
+from h.plugins.git.functions import (  # git_commit_msg_prompt_options,; git_commit_msg_prompt,
     git_tree,
+    git_commit_msg_prompt_generator,
 )
 
 app = typer.Typer(
@@ -24,12 +23,6 @@ app = typer.Typer(
 
 console = Console()
 logger = setup_logger()
-
-# with function itself. and typer options decorator
-# commands: Dict[str, Tuple[str, Callable[..., Any]]] = {
-#     "git-prompt": (git_commit_msg_prompt, git_commit_msg_prompt_options()),
-#     "git-list-files": (git_tree, git_commit_msg_prompt_options()),
-# }
 
 
 def get_context_data() -> Dict[str, Any]:
@@ -88,17 +81,12 @@ def version() -> None:
     logger.info("cli.version", version=__version__)
     console.print(f"h-cli version: {__version__}")
 
-
-@git_commit_msg_prompt_options()
-@app.command()
-def gp(log_count: int = 5, tree_depth: int = 3) -> None:
-    """깃 커밋 메시지 프롬프트 생성 및 저장."""
-    return git_commit_msg_prompt(log_count=log_count, tree_depth=tree_depth)
+git_commit_msg_prompt_generator(app, "gp")
 
 
 @app.command()
 def gt() -> None:
-    """깃 프로젝트 파일 트리 출력."""
+    """Outputs the git project file tree."""
     return git_tree()
 
 
