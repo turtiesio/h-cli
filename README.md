@@ -11,6 +11,10 @@ h gp     # 커밋 메시지 프롬프트 생성 및 저장
          # 커밋 메시지 생성을 위해 git status, staged diff, 최근 로그, 디렉토리 트리 정보를 제공합니다.
 
 h gt     # Git 파일 목록 및 저장
+
+h gc <repo_url> [--target <target_dir>]  # Git 저장소를 복제하고 VS Code에서 엽니다.
+         # 저장소 URL을 필수로 받으며, --target 옵션을 통해 복제할 디렉토리를 지정할 수 있습니다.
+         # --target 옵션이 없으면 ~/dev/<repo_name>에 복제합니다.
 ```
 
 ### 기본 명령어

@@ -2,6 +2,7 @@ import typer
 
 from h.core.commands import add_main, add_version
 from h.plugins.git.functions import add_git_commit_msg_prompt, add_git_tree
+from h.plugins.git.functions.git_clone import add_git_clone
 
 app = typer.Typer(
     name="h",
@@ -16,6 +17,7 @@ add_version(app, "version")
 
 add_git_commit_msg_prompt(app, "gp")
 add_git_tree(app, "gt")
+add_git_clone(app, "gc")
 
 if __name__ == "__main__":
     app()
