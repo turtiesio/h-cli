@@ -67,10 +67,7 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
             raise typer.Exit(1)
 
 
-_PROMPT = """# Git Commit Message Generator
-
-## Directives
-TARGET OBJECTIVE:
+_PROMPT = """TARGET OBJECTIVE:
 Generate clear, consistent, and informative Git commit messages that effectively communicate code changes while following established best practices and conventional commits specification.
 
 CONTEXT:
