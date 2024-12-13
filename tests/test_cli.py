@@ -5,7 +5,8 @@ from typing import Any, Dict
 import pytest
 from typer.testing import CliRunner
 
-from h.cli import app, get_context_data
+from h.cli import app
+from h.core.commands import get_context_data
 
 
 @pytest.fixture

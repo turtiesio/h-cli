@@ -20,7 +20,7 @@ def get_context_data() -> Dict[str, Any]:
     """
     return {
         "config": load_config(),
-        "logger": logger.bind(),  # Create a new bound logger
+        "logger": logger,  # Return the logger directly
         "console": console,
     }
 
