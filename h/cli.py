@@ -1,6 +1,6 @@
 """Main CLI entry point for the h-cli tool."""
 
-from typing import Any, Callable, Dict, Optional, Tuple
+from typing import Any, Dict, Optional
 
 import typer
 from click import get_current_context
@@ -9,7 +9,7 @@ from rich.console import Console
 from h.config import load_config
 from h.logger import setup_logger
 from h.plugins.git.functions import (  # git_commit_msg_prompt_options,; git_commit_msg_prompt,
-    git_tree,
+    git_tree_generator,
     git_commit_msg_prompt_generator,
 )
 
@@ -82,12 +82,7 @@ def version() -> None:
     console.print(f"h-cli version: {__version__}")
 
 git_commit_msg_prompt_generator(app, "gp")
-
-
-@app.command()
-def gt() -> None:
-    """Outputs the git project file tree."""
-    return git_tree()
+git_tree_generator(app, "gt")
 
 
 if __name__ == "__main__":

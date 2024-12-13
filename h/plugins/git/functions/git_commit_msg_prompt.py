@@ -48,9 +48,9 @@ def git_commit_msg_prompt_generator(app: typer.Typer, name: str) -> None:
                 tree=git.get_directory_tree(tree_depth),
             )
 
-            # 파일 경로 출력
+            temp_file = create_temp_file("git_commit_", content)
             console.print(
-                f"\n[bold]Commit Message File: [blue]{create_temp_file(content)}[/blue][/bold]\n\n"
+                f"\n[bold]Commit Message File: [blue]{temp_file}[/blue][/bold]\n\n"
             )
         except GitError as e:
             console.print(f"\n[red]Error:[/red] {str(e)}")
