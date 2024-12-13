@@ -8,6 +8,9 @@
 # Git 관련 명령어 (h gp)
 h gp     # 커밋 메시지 프롬프트 생성 및 저장
          # (스테이지된 파일이 없으면 에러 메시지 출력)
+         # 커밋 메시지 생성을 위해 git status, staged diff, 최근 로그, 디렉토리 트리 정보를 제공합니다.
+
+h gt     # Git 파일 목록 및 저장
 ```
 
 ### 기본 명령어
@@ -22,6 +25,13 @@ h --verbose
 # 버전 표시
 h version
 ```
+
+## Features
+
+- Git commit message prompt (`h gp`)
+- Display help (`h --help`)
+- Verbose logging (`h --verbose`)
+- Display version (`h version`)
 
 ## 개요
 
@@ -105,3 +115,4 @@ make test
 
 # 린팅 및 타입 체킹 실행
 make lint
+```
