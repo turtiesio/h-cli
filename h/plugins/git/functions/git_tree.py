@@ -1,3 +1,5 @@
+from tempfile import gettempdir, tempdir
+
 import typer
 from rich.console import Console
 
@@ -5,6 +7,7 @@ from h.plugins.git.commands import GitCommands
 from h.plugins.git.exceptions import GitError
 from h.utils.file_utils import create_temp_file
 from h.utils.logger import get_logger
+from h.utils.vscode_utils import open_file_with_vscode
 
 logger = get_logger(__name__)
 
@@ -26,8 +29,15 @@ def add_git_tree(app: typer.Typer, name: str) -> None:
             console.print(f"\n[bold]Project Structure:[/bold]\n{tree}")
 
             # save file
-            temp_file = create_temp_file("git_file_list_", tree)
+            temp_file = create_temp_file(
+                filename="git_tree.md",
+                content=tree,
+            )
+
             console.print(f"\n[bold]File List: [blue]{temp_file}[/blue][/bold]\n\n")
+
+            open_file_with_vscode(temp_file)
+
         except GitError as e:
             console.print(f"\n[red]Error:[/red] {str(e)}")
             raise typer.Exit(1)

@@ -5,6 +5,7 @@ from h.plugins.git.commands import GitCommands
 from h.plugins.git.exceptions import GitError
 from h.utils.file_utils import create_temp_file
 from h.utils.logger import get_logger
+from h.utils.vscode_utils import open_file_with_vscode
 
 logger = get_logger(__name__)
 
@@ -48,10 +49,15 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
                 tree=git.get_directory_tree(tree_depth),
             )
 
-            temp_file = create_temp_file("git_commit_", content)
+            temp_file = create_temp_file(
+                filename="git_commit_msg_prompt.md", content=content
+            )
+
             console.print(
                 f"\n[bold]Commit Message File: [blue]{temp_file}[/blue][/bold]\n\n"
             )
+
+            open_file_with_vscode(temp_file)
         except GitError as e:
             console.print(f"\n[red]Error:[/red] {str(e)}")
             raise typer.Exit(1)

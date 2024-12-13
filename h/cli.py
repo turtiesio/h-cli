@@ -17,6 +17,5 @@ add_version(app, "version")
 add_git_commit_msg_prompt(app, "gp")
 add_git_tree(app, "gt")
 
-
 if __name__ == "__main__":
     app()
