@@ -1,13 +1,8 @@
 """Main CLI entry point for the h-cli tool."""
 
-from typing import Any, Dict
-
 import typer
-from rich.console import Console
 
-from h.config import load_config
 from h.core.commands import add_main, add_version
-from h.logger import setup_logger
 from h.plugins.git.functions import add_git_commit_msg_prompt, add_git_tree
 
 app = typer.Typer(
