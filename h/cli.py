@@ -1,13 +1,14 @@
 """Main CLI entry point for the h-cli tool."""
 
-from typing import Any, Dict, Optional
-
+from typing import Any, Dict, Optional, List
 import typer
 from rich.console import Console
-
+import os
+import fnmatch
 from h.config import load_config
 from h.logger import setup_logger
-from h.plugins.git import app as git_app
+from click import get_current_context
+from h.plugins.git.git_plugin_functions import get_git_commands, get_template_content, open_in_vscode, prompt, list_files
 
 app = typer.Typer(
     name="h",
@@ -16,9 +17,6 @@ app = typer.Typer(
     no_args_is_help=True,  # Show help when no arguments are provided
     context_settings={"help_option_names": ["-h", "--help"]},  # Enable -h flag
 )
-
-# Add plugins
-app.add_typer(git_app, name="gp")
 
 console = Console()
 logger = setup_logger()
@@ -68,8 +66,6 @@ def main(
     context_data["verbose"] = verbose
 
     # Set context for the current command
-    from click import get_current_context
-
     get_current_context().obj = context_data
     logger.debug("cli.initialized", verbose=verbose)
 
@@ -82,6 +78,22 @@ def version() -> None:
     logger.info("cli.version", version=__version__)
     console.print(f"h-cli version: {__version__}")
 
+@app.command("git-prompt")
+def git_prompt_command(
+    log_count: int = typer.Option(
+        5, "--logs", "-l", help="Number of recent logs to show"
+    ),
+    tree_depth: int = typer.Option(
+        3, "--depth", "-d", help="Maximum depth for directory tree"
+    ),
+):
+    """커밋 메시지 생성을 위한 프롬프트 생성."""
+    return prompt(log_count=log_count, tree_depth=tree_depth)
+
+@app.command("git-list-files")
+def git_list_files_command():
+    """List files in the git repository."""
+    return list_files()
 
 if __name__ == "__main__":
     app()

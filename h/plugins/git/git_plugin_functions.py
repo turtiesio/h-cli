@@ -1,21 +1,17 @@
-"""Git 플러그인."""
 import os
-import tempfile
-import typer
+import subprocess
 from rich.console import Console
-
 from h.plugins.git.exceptions import GitError
 from h.plugins.git.git_commands import GitCommands
 from h.utils.logger import get_logger
+from h.utils.file_utils import create_temp_file
+import typer
 
-app = typer.Typer()
 logger = get_logger(__name__)
-
 
 def get_git_commands() -> GitCommands:
     """Git 명령어 실행을 위한 인스턴스 생성."""
     return GitCommands(logger)
-
 
 def get_template_content() -> str:
     """커밋 메시지 템플릿 내용 가져오기."""
@@ -38,27 +34,6 @@ References:
 
 Co-authored-by: """
 
-
-def create_temp_file(content: str) -> str:
-    """임시 파일 생성.
-    
-    Args:
-        content: 파일 내용
-        
-    Returns:
-        생성된 임시 파일 경로
-    """
-    with tempfile.NamedTemporaryFile(
-        mode="w",
-        suffix=".md",
-        prefix="git_commit_",
-        delete=False,
-        encoding="utf-8",
-    ) as temp:
-        temp.write(content)
-        return temp.name
-
-
 def open_in_vscode(file_path: str) -> None:
     """VSCode로 파일 열기.
     
@@ -66,38 +41,10 @@ def open_in_vscode(file_path: str) -> None:
         file_path: 파일 경로
     """
     try:
-        import subprocess
         subprocess.run(["code", file_path], check=True)
     except Exception as e:
         logger.error("git.vscode.failed", error=str(e))
 
-
-def setup_git(app: typer.Typer) -> None:
-    """Set up git plugin commands.
-    
-    Args:
-        app: Typer app instance
-    """
-    app.add_typer(app, name="git")
-
-
-@app.callback(invoke_without_command=True)
-def default_command(
-    ctx: typer.Context,
-    log_count: int = typer.Option(
-        5, "--logs", "-l", help="Number of recent logs to show"
-    ),
-    tree_depth: int = typer.Option(
-        3, "--depth", "-d", help="Maximum depth for directory tree"
-    ),
-):
-    """Git 플러그인 기본 동작."""
-    if ctx.invoked_subcommand is None:
-        # 서브커맨드가 없으면 prompt 실행
-        prompt(log_count=log_count, tree_depth=tree_depth)
-
-
-@app.command("prompt", hidden=True)
 def prompt(
     log_count: int = typer.Option(
         5, "--logs", "-l", help="Number of recent logs to show"
@@ -160,18 +107,30 @@ def prompt(
 {tree}
 ```
 """
-        temp_file = create_temp_file(content)
+        temp_file = create_temp_file(content, message="Commit message file created:")
         
         # 파일 경로 출력
         console.print(f"\n[bold]Commit Message File: [blue]{temp_file}[/blue][/bold]\n\n")
-        
-        # VSCode로 열기
-        # open_in_vscode(temp_file)
-        
     except GitError as e:
         console.print(f"\n[red]Error:[/red] {str(e)}")
         raise typer.Exit(1)
     except Exception as e:
         logger.error("git.prompt.failed", error=str(e))
         console.print("\n[red]Error:[/red] 프롬프트 생성 중 오류가 발생했습니다.")
+        raise typer.Exit(1)
+
+def list_files() -> None:
+    """List files in the git repository."""
+    console = Console()
+    try:
+        git = get_git_commands()
+        files = git.list_files_command()
+        console.print("\n[bold]Git Files:[/bold]")
+        console.print(files)
+    except GitError as e:
+        console.print(f"\n[red]Error:[/red] {str(e)}")
+        raise typer.Exit(1)
+    except Exception as e:
+        logger.error("git.list_files.failed", error=str(e))
+        console.print("\n[red]Error:[/red] 파일 목록을 가져오는 중 오류가 발생했습니다.")
         raise typer.Exit(1)

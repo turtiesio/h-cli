@@ -1,8 +1,9 @@
 """로깅 유틸리티."""
 import structlog
+from typing import Optional
 
 
-def get_logger(name: str = None):
+def get_logger(name: Optional[str] = None):
     """로거 인스턴스 생성.
     
     Args:

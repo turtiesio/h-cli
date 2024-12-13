@@ -99,3 +99,7 @@ class GitCommands:
             return self.run_command(["ls-tree", "--full-tree", "-r", "HEAD", "--name-only"])
         except GitError:
             return "Could not generate directory tree"
+
+    def list_files_command(self) -> str:
+        """git ls-files 명령어 실행."""
+        return self.run_command(["ls-files"])
