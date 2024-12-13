@@ -4,12 +4,13 @@ import subprocess
 from typing import List
 
 from h.plugins.git.exceptions import GitError
+from h.utils.logger import DLogger
 
 
 class GitCommands:
     """Git 명령어 실행을 위한 클래스."""
 
-    def __init__(self, logger):
+    def __init__(self, logger: DLogger) -> None:
         """초기화.
 
         Args:

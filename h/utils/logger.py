@@ -4,8 +4,12 @@ from typing import Optional
 
 import structlog
 
+DLogger = structlog.stdlib.BoundLogger
 
-def get_logger(name: Optional[str] = None):
+logger: DLogger = structlog.get_logger()
+
+
+def get_logger(name: Optional[str] = None) -> DLogger:
     """로거 인스턴스 생성.
 
     Args:
@@ -14,4 +18,4 @@ def get_logger(name: Optional[str] = None):
     Returns:
         structlog.BoundLogger: 로거 인스턴스
     """
-    return structlog.get_logger(name)
+    return logger.bind(name=name)

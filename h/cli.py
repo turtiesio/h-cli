@@ -1,5 +1,3 @@
-"""Main CLI entry point for the h-cli tool."""
-
 import typer
 
 from h.core.commands import add_main, add_version
