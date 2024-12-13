@@ -9,7 +9,7 @@ from h.utils.logger import get_logger
 logger = get_logger(__name__)
 
 
-def git_commit_msg_prompt_generator(app: typer.Typer, name: str) -> None:
+def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
     @app.command(name=name)
     def function(
         log_count: int = typer.Option(
@@ -59,9 +59,6 @@ def git_commit_msg_prompt_generator(app: typer.Typer, name: str) -> None:
             logger.error("git.prompt.failed", error=str(e))
             console.print("\n[red]Error:[/red] 프롬프트 생성 중 오류가 발생했습니다.")
             raise typer.Exit(1)
-
-
-
 
 
 _PROMPT = """# Git Commit Message Generator

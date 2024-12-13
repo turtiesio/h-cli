@@ -9,7 +9,7 @@ from h.utils.logger import get_logger
 logger = get_logger(__name__)
 
 
-def git_tree_generator(app: typer.Typer, name: str) -> None:
+def add_git_tree(app: typer.Typer, name: str) -> None:
     @app.command(name=name)
     def function(
         tree_depth: int = typer.Option(
