@@ -17,6 +17,14 @@ h gc <repo_url> [--target <target_dir>]  # Git 저장소를 복제하고 VS Code
          # --target 옵션이 없으면 ~/dev/<repo_name>에 복제합니다.
 ```
 
+### AI 기능 (h ai)
+
+```bash
+# AI 관련 명령어 (h ai)
+h ai <question>  # AI 모델에 질문하고 응답을 받습니다.
+h ai             # 질문을 입력하라는 프롬프트가 표시됩니다.
+```
+
 ### 기본 명령어
 
 ```bash
@@ -36,6 +44,7 @@ h version
 - Display help (`h --help`)
 - Verbose logging (`h --verbose`)
 - Display version (`h version`)
+- Ask a question to an AI model (`h ai`)
 
 ## 개요
 
