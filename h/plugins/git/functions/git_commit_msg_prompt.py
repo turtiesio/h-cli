@@ -66,9 +66,14 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
                 live.update(Text(f"Commit message generated in {elapsed_time:.2f} seconds.", style="bold green"))
 
             console.print(f"\n[bold]Commit Message:[/bold]\n{commit_message}")
+            
+            # Construct and print the git commit command
+            console.print(f"\n[bold]Git Commit Command:[/bold]\n[green]{commit_message}[/green]")
+
+            git_commit_command = f"git commit -m \"{commit_message}\""
 
             temp_file = create_temp_file(
-                filename="git_commit_msg.txt", content=commit_message
+                filename="git_commit_msg.txt", content=git_commit_command
             )
 
             console.print(
