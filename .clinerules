@@ -2,8 +2,7 @@
 
 ## Project Configuration
 
-- **Package Manager:** `ux` (strictly enforced).
-  - _Justification:_ Assuming `ux` is a custom or internal package manager, this enforces its use.
+- **Package Manager:** `uv` (strictly enforced).
 - **Logger:** `structlog` with `json` formatter (strictly enforced).
   - _Justification:_ `structlog` for structured logging and JSON for machine-readable log analysis.
 - **API Documentation:** Not Applicable (CLI Project).

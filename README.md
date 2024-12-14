@@ -120,3 +120,31 @@ make test
 # 린팅 및 타입 체킹 실행
 make lint
 ```
+
+## AI Module
+
+This module provides an interface for interacting with different AI models.
+
+### Usage
+
+To use the AI module, you can import the `AIInterface` and its implementations:
+
+```python
+from h.utils.ai import GeminiAI, OpenAI
+
+# Example usage with Gemini
+gemini_ai = GeminiAI()
+prompt = "Write a short poem about the moon."
+response = gemini_ai.generate_text(prompt)
+print(response)
+
+# Example usage with OpenAI (placeholder)
+openai_ai = OpenAI()
+prompt = "Write a short story about a cat."
+response = openai_ai.generate_text(prompt)
+print(response)
+```
+
+Currently, only the `GeminiAI` implementation is available. The `OpenAI` implementation is a placeholder and will be added later.
+
+To use the `GeminiAI` you need to set the `GOOGLE_API_KEY` environment variable.

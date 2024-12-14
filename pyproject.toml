@@ -5,12 +5,14 @@ description = "Personal productivity CLI tool"
 authors = [
     { name = "Your Name", email = "your.email@example.com" }
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
     "typer>=0.9.0",
     "pyyaml>=6.0.1",
     "rich>=13.7.0",
     "structlog>=24.1.0",
+    "google-generativeai>=0.3.2",
+    "python-dotenv>=1.0.0"
 ]
 
 [project.optional-dependencies]
@@ -36,14 +38,14 @@ h = "h.cli:app"
 
 [tool.black]
 line-length = 88
-target-version = ["py38"]
+target-version = ["py39"]
 
 [tool.isort]
 profile = "black"
 multi_line_output = 3
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
