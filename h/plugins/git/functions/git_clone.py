@@ -1,10 +1,10 @@
 import os
 import subprocess
-import typer
-from rich.console import Console
 from urllib.parse import urlparse
 
-from h.plugins.git.exceptions import GitError
+import typer
+from rich.console import Console
+
 from h.utils.logger import get_logger
 from h.utils.vscode_utils import open_file_with_vscode
 
@@ -29,7 +29,6 @@ def add_git_clone(app: typer.Typer, name: str) -> None:
             repo_name = os.path.splitext(os.path.basename(urlparse(repo_url).path))[0]
             if target_dir is None:
                 target_dir = os.path.join(os.path.expanduser("~"), "dev", repo_name)
-
 
             console.print(
                 f"\n[bold]Cloning repository:[/bold] {repo_url} to {target_dir}\n"
@@ -62,12 +61,14 @@ def add_git_clone(app: typer.Typer, name: str) -> None:
                         f"\n[red]Error:[/red] Failed to clone repository: {error_output}"
                     )
                 else:
-                    logger.error("git.clone.failed", error="Git clone failed with no error message")
+                    logger.error(
+                        "git.clone.failed",
+                        error="Git clone failed with no error message",
+                    )
                     console.print(
                         f"\n[red]Error:[/red] Git clone failed with no error message"
                     )
                 raise typer.Exit(1)
-
 
             console.print(
                 f"\n[bold]Repository cloned successfully to:[/bold] {target_dir}\n"
