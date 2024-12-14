@@ -1,11 +1,16 @@
+import time
 import typer
 from rich.console import Console
+from rich.live import Live
+from rich.text import Text
+from rich.spinner import Spinner
 
 from h.plugins.git.commands import GitCommands
 from h.plugins.git.exceptions import GitError
 from h.utils.file_utils import create_temp_file
 from h.utils.logger import get_logger
 from h.utils.vscode_utils import open_file_with_vscode
+from h.utils.ai.gemini import GeminiAI
 
 logger = get_logger(__name__)
 
@@ -22,7 +27,7 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
     ) -> None:
         """커밋 메시지 생성을 위한 프롬프트 생성."""
         console = Console()
-
+        
         try:
             git = GitCommands(logger)
 
@@ -41,16 +46,29 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
             console.print(f"\n[bold]Recent Commits:[/bold]\n{logs}")
             console.print(f"\n[bold]Project Structure:[/bold]\n{tree}")
 
-            # 템플릿 파일 생성
-            content = _PROMPT.format(
-                status=git.get_status(),
-                diff=git.get_staged_diff(),
-                logs="\n".join(git.get_recent_logs(log_count)),
-                tree=git.get_directory_tree(tree_depth),
+            # Generate commit message using Gemini
+            gemini = GeminiAI()
+            prompt = _PROMPT.format(
+                status=status,
+                diff=diff,
+                logs=logs,
+                tree=tree,
             )
+            
+            with Live(console=console, screen=True) as live:
+                start_time = time.time()
+                spinner = Spinner("dots", text="Generating commit message...", style="bold green")
+                live.update(spinner)
+
+                commit_message = gemini.generate_text(prompt)
+                end_time = time.time()
+                elapsed_time = end_time - start_time
+                live.update(Text(f"Commit message generated in {elapsed_time:.2f} seconds.", style="bold green"))
+
+            console.print(f"\n[bold]Commit Message:[/bold]\n{commit_message}")
 
             temp_file = create_temp_file(
-                filename="git_commit_msg_prompt.md", content=content
+                filename="git_commit_msg.txt", content=commit_message
             )
 
             console.print(
