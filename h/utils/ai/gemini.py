@@ -12,10 +12,12 @@ class GeminiAI(AIInterface):
         Initializes the Gemini AI model.
         """
         api_key = os.getenv("GOOGLE_API_KEY")
+
         if not api_key:
             raise ValueError("GOOGLE_API_KEY environment variable not set.")
+        
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-pro')
+        self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
 
     def generate_text(self, prompt: str, **kwargs) -> str:
         """

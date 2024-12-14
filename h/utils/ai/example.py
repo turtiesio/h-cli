@@ -1,13 +1,14 @@
-import os
 import sys
-from dotenv import load_dotenv
+
+from h.config import load_config
 from h.utils.ai import GeminiAI, OpenAI
+
 
 def main():
     """
     Example usage of the AI interface.
     """
-    load_dotenv()
+    load_config()
 
     try:
         gemini_ai = GeminiAI()

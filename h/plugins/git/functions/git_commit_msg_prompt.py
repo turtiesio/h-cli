@@ -4,6 +4,10 @@ from rich.console import Console
 from rich.live import Live
 from rich.text import Text
 from rich.spinner import Spinner
+import os
+import sys
+from pathlib import Path
+from dotenv import load_dotenv
 
 from h.plugins.git.commands import GitCommands
 from h.plugins.git.exceptions import GitError
@@ -27,7 +31,7 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
     ) -> None:
         """커밋 메시지 생성을 위한 프롬프트 생성."""
         console = Console()
-        
+
         try:
             git = GitCommands(logger)
 
@@ -41,10 +45,10 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
             tree = git.get_directory_tree(tree_depth)
 
             # 프롬프트 출력
-            console.print(f"\n[bold]Git Status:[/bold]\n{status}")
-            console.print(f"\n[bold]Staged Changes:[/bold]\n{diff}")
-            console.print(f"\n[bold]Recent Commits:[/bold]\n{logs}")
-            console.print(f"\n[bold]Project Structure:[/bold]\n{tree}")
+            # console.print(f"\n[bold]Git Status:[/bold]\n{status}")
+            # console.print(f"\n[bold]Staged Changes:[/bold]\n{diff}")
+            # console.print(f"\n[bold]Recent Commits:[/bold]\n{logs}")
+            # console.print(f"\n[bold]Project Structure:[/bold]\n{tree}")
 
             # Generate commit message using Gemini
             gemini = GeminiAI()
@@ -119,6 +123,8 @@ _PROMPT = """You are an expert in writing Conventional Commit messages. Follow t
 *   **Breaking Change:** MUST use `!` after the type or scope (e.g., `feat!:` or `feat(api)!:`) or include a footer that starts with `BREAKING CHANGE:`.
 *   **Imperative:** Descriptions should be in the imperative, present tense ("add feature", not "added feature" or "adds feature").
 *  **Use correct capitalization:** The units of information that make up Conventional Commits MUST NOT be treated as case sensitive by implementors, with the exception of BREAKING CHANGE which MUST be uppercase.
+*  **Do not print ``` in response(no markdown)**
+*  **Use Korean**
 
 **Examples:**
 
