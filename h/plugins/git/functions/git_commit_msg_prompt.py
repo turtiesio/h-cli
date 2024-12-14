@@ -67,101 +67,52 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
             raise typer.Exit(1)
 
 
-_PROMPT = """TARGET OBJECTIVE:
-Generate clear, consistent, and informative Git commit messages that effectively communicate code changes while following established best practices and conventional commits specification.
+_PROMPT = """You are an expert in writing Conventional Commit messages. Follow the Conventional Commits specification (v1.0.0) meticulously. The commit message structure must be:
 
-CONTEXT:
-- Git commit message structure (subject line, body, footer)
-- Conventional commits format (type, scope, description)
-- Project-specific requirements
-- Branch context and issue tracking
+`<type>[optional scope]: <description>`
 
-CORE INSTRUCTION:
-Given a set of code changes, create a commit message that:
+`[optional body]`
 
-1. Start with a conventional commit type:
-   - feat: New feature
-   - fix: Bug fix
-   - docs: Documentation changes
-   - style: Code style updates
-   - refactor: Code refactoring
-   - test: Test updates
-   - chore: Maintenance tasks
+`[optional footer(s)]`
 
-2. Include a clear scope (optional):
-   - Component name
-   - Module affected
-   - Feature area
+**Commit Message Requirements:**
 
-3. Write a concise subject line:
-   - Use imperative mood
-   - Maximum 50 characters
-   - No period at the end
-   - Capitalize first letter
+*   **Type:** MUST be one of `feat`, `fix`, `build`, `chore`, `ci`, `docs`, `style`, `refactor`, `perf`, `test`, `revert`.
+    *   `feat`: A new feature.
+    *   `fix`: A bug fix.
+    *   `build`: Changes that affect the build system or external dependencies (e.g., gulp, npm, webpack).
+    *   `chore`: Miscellaneous tasks that don't fit into other types.
+    *   `ci`: Changes to CI configuration files and scripts.
+    *   `docs`: Documentation changes.
+    *   `style`: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
+    *   `refactor`: Code changes that neither fix a bug nor add a feature.
+    *   `perf`: A code change that improves performance.
+    *   `test`: Adding missing tests or correcting existing tests.
+     *  `revert`: Reverting a previous commit.
+*   **Scope:**  (Optional) A noun in parentheses describing the section of the codebase affected, e.g., `feat(api)` or `fix(parser)`.
+*   **Description:** A short summary of the changes. The description MUST immediately follow the colon and space after the type/scope prefix. It should use imperative, present tense ("add feature", not "added feature" or "adds feature").
+*   **Body:** (Optional) Detailed explanation of the changes. Should be separated from the description by a blank line. Can be multiple paragraphs.
+*   **Footer:** (Optional) Can include `BREAKING CHANGE:` description of breaking changes, `Refs:` for issue/PR numbers, or other similar information. Must follow a blank line after the body and be in a `token: value` or `token #value` format.
+*   **Breaking Change:** MUST use `!` after the type or scope (e.g., `feat!:` or `feat(api)!:`) or include a footer that starts with `BREAKING CHANGE:`.
+*   **Imperative:** Descriptions should be in the imperative, present tense ("add feature", not "added feature" or "adds feature").
+*  **Use correct capitalization:** The units of information that make up Conventional Commits MUST NOT be treated as case sensitive by implementors, with the exception of BREAKING CHANGE which MUST be uppercase.
 
-4. Provide detailed body (if needed):
-   - Blank line after subject
-   - Wrap at 72 characters
-   - Explain "what" and "why" (not "how")
-   - Reference related issues
+**Examples:**
 
-FORMAT REQUIREMENTS:
-<type>(<scope>): <subject>
+*   `feat: add user authentication`
+*   `fix(auth): prevent login issues`
+*  `feat(api)!: send an email to the customer when a product is shipped`
+*   `docs: update README with installation instructions`
+*   `chore: update dependencies`
+*   `perf: optimize image loading`
+*   `fix: fix a bug that was crashing the app`
+*   `refactor: simplify complex code`
+*   `test: add unit tests for user service`
+*   `build: add webpack config`
+*    `ci: update github action`
+* `revert: let us never again speak of the noodle incident\n\nRefs: 676104e, a215868`
 
-[blank line]
-<body>
-
-[blank line]
-<footer>
-
-Example:
-feat(auth): implement OAuth2 login flow
-
-Implement Google OAuth2 authentication to replace 
-basic auth. This change improves security and user 
-experience by removing password management.
-
-Closes #123
-Breaking change: Removes basic auth endpoints
-
-VALIDATION CHECKS:
-- Verify conventional commit format
-- Check character limits (50/72)
-- Confirm imperative mood
-- Validate issue references
-- Check for breaking change notices
-- Ensure clear context is provided
-
-EXAMPLE OUTPUT:
-feat(api): add user preference endpoint
-
-Implement new REST endpoint for managing user preferences.
-This addition supports the upcoming dark mode feature
-and will enable future personalization options.
-
-Resolves #456
-Requires DB migration: 202312110001
-
-OPTIMIZATION NOTES:
-1. Use consistent terminology across commits
-2. Reference tickets/issues when applicable
-3. Highlight breaking changes prominently
-4. Include relevant context for future reference
-5. Consider adding co-author tags for pair programming
-
-Write in Korean and markdown
-
-Here is the actual git current state:
-
-----------------------------------------------
-
-## Git Status
-
-{status}
-
-## Staged Changes
-
-{diff}
+**Now, generate a conventional commit message for the following change in Korean:**
 
 ## Recent Commits
 
@@ -170,4 +121,12 @@ Here is the actual git current state:
 ## Project Structure
 
 {tree}
+
+## Git Status
+
+{status}
+
+## Staged Changes
+
+{diff}
 """
