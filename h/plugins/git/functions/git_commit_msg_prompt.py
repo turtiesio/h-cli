@@ -112,21 +112,21 @@ _PROMPT = """You are an expert in writing Conventional Commit messages. Follow t
 *    `ci: update github action`
 * `revert: let us never again speak of the noodle incident\n\nRefs: 676104e, a215868`
 
-**Now, generate a conventional commit message for the following change in Korean:**
-
-## Recent Commits
+**Recent Commits**
 
 {logs}
 
-## Project Structure
+**Project Structure**
 
 {tree}
 
-## Git Status
+**Now, generate a conventional commit message for the following change in Korean:**
+
+**Git Status**
 
 {status}
 
-## Staged Changes
+**Staged Changes**
 
 {diff}
 """
