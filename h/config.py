@@ -49,10 +49,6 @@ def load_config() -> Dict[str, Any]:
     else:
         raise FileNotFoundError(f"Config file not found: {env_path}")
 
-    # print env
-    for key, value in os.environ.items():
-        print(f"{key}={value}")
-
     config_path = get_config_path()
     config = {}
     if config_path.exists():
