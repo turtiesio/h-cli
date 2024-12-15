@@ -16,6 +16,8 @@ from h.utils.logger import get_logger
 from h.utils.vscode_utils import open_file_with_vscode
 from h.utils.ai.gemini import GeminiAI
 
+from h.config import get_config
+
 logger = get_logger(__name__)
 
 
@@ -31,6 +33,12 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
     ) -> None:
         """커밋 메시지 생성을 위한 프롬프트 생성."""
         console = Console()
+
+        config = get_config()
+
+        if config.gemini_api_key is None:
+            console.print("\n[red]Error:[/red] Gemini API key is not set.")
+            raise typer.Exit(1)
 
         try:
             git = GitCommands(logger)
@@ -51,7 +59,7 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
             # console.print(f"\n[bold]Project Structure:[/bold]\n{tree}")
 
             # Generate commit message using Gemini
-            gemini = GeminiAI()
+            gemini = GeminiAI(config.gemini_api_key)
             prompt = _PROMPT.format(
                 status=status,
                 diff=diff,

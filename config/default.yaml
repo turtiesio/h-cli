@@ -5,9 +5,14 @@ app:
 
 # Plugin configurations
 plugins:
-  enabled: []  # List of enabled plugins
+  enabled: [] # List of enabled plugins
 
 # Logging configuration
 logging:
   level: INFO
   format: "%(asctime)s %(name)s %(levelname)s %(message)s"
+
+# API Keys
+api_key: ""
+gemini_api_key: ""
+openrouter_api_key: ""

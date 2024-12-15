@@ -5,6 +5,13 @@ class OpenAI(AIInterface):
     Placeholder for OpenAI implementation.
     """
 
+    def __init__(self, api_key: str):
+        """
+        Initializes the OpenAI model.
+        """
+        if not api_key:
+            raise ValueError("OpenAI API key not set.")
+
     def generate_text(self, prompt: str, **kwargs) -> str:
         """
         Generates text using the OpenAI model.

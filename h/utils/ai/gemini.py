@@ -7,14 +7,12 @@ class GeminiAI(AIInterface):
     Implementation of AIInterface using Google Gemini.
     """
 
-    def __init__(self):
+    def __init__(self, api_key: str):
         """
         Initializes the Gemini AI model.
         """
-        api_key = os.getenv("GOOGLE_API_KEY")
-
         if not api_key:
-            raise ValueError("GOOGLE_API_KEY environment variable not set.")
+            raise ValueError("Gemini API key not set.")
         
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
