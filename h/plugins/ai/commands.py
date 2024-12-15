@@ -12,5 +12,4 @@ def add_ai(app: typer.Typer, name: str):
         if question is None:
             question = typer.prompt("What is your question?")
         
-        response = get_ai_response(question)
-        print(response)
+        print(get_ai_response(question))
