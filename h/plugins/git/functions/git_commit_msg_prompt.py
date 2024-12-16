@@ -67,22 +67,29 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
                 tree=tree,
             )
             
-            with Live(console=console, screen=True) as live:
-                start_time = time.time()
-                spinner = Spinner("dots", text="Generating commit message...", style="bold green")
-                live.update(spinner)
+            try:
+                with Live(console=console, screen=True) as live:
+                    start_time = time.time()
+                    spinner = Spinner("dots", text="Generating commit message...", style="bold green")
+                    live.update(spinner)
 
-                commit_message = gemini.generate_text(prompt)
-                end_time = time.time()
-                elapsed_time = end_time - start_time
-                live.update(Text(f"Commit message generated in {elapsed_time:.2f} seconds.", style="bold green"))
+                    commit_message = gemini.generate_text(prompt)
+                    end_time = time.time()
+                    elapsed_time = end_time - start_time
+                    live.update(Text(f"Commit message generated in {elapsed_time:.2f} seconds.", style="bold green"))
 
-            console.print(f"\n[bold]Commit Message:[/bold]\n{commit_message}")
-            
-            # Construct and print the git commit command
-            console.print(f"\n[bold]Git Commit Command:[/bold]\n[green]{commit_message}[/green]")
+                console.print(f"\n[bold]Commit Message:[/bold]\n{commit_message}")
+                
+                # Construct and print the git commit command
+                console.print(f"\n[bold]Git Commit Command:[/bold]\n[green]{commit_message}[/green]")
 
-            git_commit_command = f"git commit -m \"{commit_message}\""
+                git_commit_command = f"git commit -m \"{commit_message}\""
+            except Exception as e:
+                console.print(f"\n[red]Error:[/red] {str(e)}")
+                console.print("\n[red]Error:[/red] 프롬프트 생성 중 오류가 발생했습니다.")
+                console.print("\n[red]Error:[/red] 프롬프트를 대신 저장합니다.")
+                git_commit_command = prompt
+                
 
             temp_file = create_temp_file(
                 filename="git_commit_msg.txt", content=git_commit_command
