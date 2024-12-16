@@ -133,12 +133,12 @@ _PROMPT = """You are an expert in writing Conventional Commit messages. Follow t
      *  `revert`: Reverting a previous commit.
 *   **Scope:**  (Optional) A noun in parentheses describing the section of the codebase affected, e.g., `feat(api)` or `fix(parser)`.
 *   **Description:** A short summary of the changes. The description MUST immediately follow the colon and space after the type/scope prefix. It should use imperative, present tense ("add feature", not "added feature" or "adds feature").
-*   **Body:** (Optional) Detailed explanation of the changes. Should be separated from the description by a blank line. Can be multiple paragraphs.
+*   **Body:** (Optional) Detailed explanation of the changes. Should be separated from the description by a blank line. Can be multiple paragraphs.(100 chars max)
 *   **Footer:** (Optional) Can include `BREAKING CHANGE:` description of breaking changes, `Refs:` for issue/PR numbers, or other similar information. Must follow a blank line after the body and be in a `token: value` or `token #value` format.
 *   **Breaking Change:** MUST use `!` after the type or scope (e.g., `feat!:` or `feat(api)!:`) or include a footer that starts with `BREAKING CHANGE:`.
 *   **Imperative:** Descriptions should be in the imperative, present tense ("add feature", not "added feature" or "adds feature").
 *  **Use correct capitalization:** The units of information that make up Conventional Commits MUST NOT be treated as case sensitive by implementors, with the exception of BREAKING CHANGE which MUST be uppercase.
-*  **Do not print ``` in response(no markdown)**
+*  **Do not start with ``` in response**
 *  **Use Korean**
 
 **Examples:**
