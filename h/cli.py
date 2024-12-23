@@ -4,6 +4,7 @@ from h.core.commands import add_main, add_version
 from h.plugins.git.functions import add_git_commit_msg_prompt, add_git_tree
 from h.plugins.git.functions.git_clone import add_git_clone
 from h.plugins.ai.commands import add_ai
+from h.plugins.base.merge_files import add_merge_files
 
 load_config()
 
@@ -22,6 +23,7 @@ add_git_commit_msg_prompt(app, "gp")
 add_git_tree(app, "gt")
 add_git_clone(app, "gc")
 add_ai(app, "ai")
+add_merge_files(app, "m")
 
 if __name__ == "__main__":
     app()
