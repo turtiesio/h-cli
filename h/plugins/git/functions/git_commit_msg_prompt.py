@@ -1,22 +1,22 @@
-import time
-import typer
-from rich.console import Console
-from rich.live import Live
-from rich.text import Text
-from rich.spinner import Spinner
 import os
 import sys
+import time
 from pathlib import Path
-from dotenv import load_dotenv
 
+import typer
+from dotenv import load_dotenv
+from rich.console import Console
+from rich.live import Live
+from rich.spinner import Spinner
+from rich.text import Text
+
+from h.config import get_config
 from h.plugins.git.commands import GitCommands
 from h.plugins.git.exceptions import GitError
+from h.utils.ai.gemini import GeminiAI
 from h.utils.file_utils import create_temp_file
 from h.utils.logger import get_logger
 from h.utils.vscode_utils import open_file_with_vscode
-from h.utils.ai.gemini import GeminiAI
-
-from h.config import get_config
 
 logger = get_logger(__name__)
 
@@ -66,30 +66,41 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
                 logs=logs,
                 tree=tree,
             )
-            
+
             try:
                 with Live(console=console, screen=True) as live:
                     start_time = time.time()
-                    spinner = Spinner("dots", text="Generating commit message...", style="bold green")
+                    spinner = Spinner(
+                        "dots", text="Generating commit message...", style="bold green"
+                    )
                     live.update(spinner)
 
                     commit_message = gemini.generate_text(prompt)
+                    commit_message = commit_message.replace("`", "")
                     end_time = time.time()
                     elapsed_time = end_time - start_time
-                    live.update(Text(f"Commit message generated in {elapsed_time:.2f} seconds.", style="bold green"))
+                    live.update(
+                        Text(
+                            f"Commit message generated in {elapsed_time:.2f} seconds.",
+                            style="bold green",
+                        )
+                    )
 
                 console.print(f"\n[bold]Commit Message:[/bold]\n{commit_message}")
-                
-                # Construct and print the git commit command
-                console.print(f"\n[bold]Git Commit Command:[/bold]\n[green]{commit_message}[/green]")
 
-                git_commit_command = f"git commit -m \"{commit_message}\""
+                # Construct and print the git commit command
+                console.print(
+                    f"\n[bold]Git Commit Command:[/bold]\n[green]{commit_message}[/green]"
+                )
+
+                git_commit_command = f'git commit -m "{commit_message}"'
             except Exception as e:
                 console.print(f"\n[red]Error:[/red] {str(e)}")
-                console.print("\n[red]Error:[/red] 프롬프트 생성 중 오류가 발생했습니다.")
+                console.print(
+                    "\n[red]Error:[/red] 프롬프트 생성 중 오류가 발생했습니다."
+                )
                 console.print("\n[red]Error:[/red] 프롬프트를 대신 저장합니다.")
                 git_commit_command = prompt
-                
 
             temp_file = create_temp_file(
                 filename="git_commit_msg.txt", content=git_commit_command

@@ -40,7 +40,9 @@ class AppConfig(BaseModel):
 class PluginConfig(BaseModel):
     """Plugin configuration."""
 
-    enabled: List[str] = Field(default_factory=list, description="List of enabled plugins")
+    enabled: List[str] = Field(
+        default_factory=list, description="List of enabled plugins"
+    )
 
 
 class LoggingConfig(BaseModel):
@@ -60,8 +62,12 @@ class Config(BaseSettings):
     plugins: PluginConfig = Field(description="Plugin configurations")
     logging: LoggingConfig = Field(description="Logging configuration")
     api_key: Optional[str] = Field(default=None, description="API key for AI models")
-    gemini_api_key: Optional[str] = Field(default=None, description="API key for Gemini model")
-    openrouter_api_key: Optional[str] = Field(default=None, description="API key for OpenRouter")
+    gemini_api_key: Optional[str] = Field(
+        default=None, description="API key for Gemini model"
+    )
+    openrouter_api_key: Optional[str] = Field(
+        default=None, description="API key for OpenRouter"
+    )
 
     @classmethod
     def from_yaml(cls, config_path: Path, **kwargs: Any) -> "Config":
@@ -73,6 +79,7 @@ class Config(BaseSettings):
 
         return cls(**config, **kwargs)
 
+
 def load_config(**kwargs: Any) -> Config:
     """Load configuration from YAML file."""
     copy_default_config_if_not_exists()
@@ -81,8 +88,9 @@ def load_config(**kwargs: Any) -> Config:
 
     return Config.from_yaml(config_path, **kwargs)
 
+
 _CONFIG = load_config()
+
 
 def get_config() -> Config:
     return _CONFIG
-

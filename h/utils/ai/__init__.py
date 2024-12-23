@@ -1,14 +1,16 @@
 import os
+
+from h.config import get_config
 from h.utils.ai.base import AIInterface
 from h.utils.ai.gemini import GeminiAI
 from h.utils.ai.openai import OpenAI
-from h.config import get_config
 
 __all__ = [
     "AIInterface",
     "GeminiAI",
     "OpenAI",
 ]
+
 
 def get_ai_response(prompt: str) -> str:
     """

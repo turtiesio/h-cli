@@ -1,6 +1,9 @@
-import google.generativeai as genai
-from h.utils.ai.base import AIInterface
 import os
+
+import google.generativeai as genai
+
+from h.utils.ai.base import AIInterface
+
 
 class GeminiAI(AIInterface):
     """
@@ -13,9 +16,9 @@ class GeminiAI(AIInterface):
         """
         if not api_key:
             raise ValueError("Gemini API key not set.")
-        
+
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        self.model = genai.GenerativeModel("gemini-2.0-flash-exp")
 
     def generate_text(self, prompt: str, **kwargs) -> str:
         """

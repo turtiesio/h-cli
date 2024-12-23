@@ -1,10 +1,11 @@
-from h.config import load_config
 import typer
+
+from h.config import load_config
 from h.core.commands import add_main, add_version
-from h.plugins.git.functions import add_git_commit_msg_prompt, add_git_tree
-from h.plugins.git.functions.git_clone import add_git_clone
 from h.plugins.ai.commands import add_ai
 from h.plugins.base.merge_files import add_merge_files
+from h.plugins.git.functions import add_git_commit_msg_prompt, add_git_tree
+from h.plugins.git.functions.git_clone import add_git_clone
 
 load_config()
 

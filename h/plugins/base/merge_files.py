@@ -1,13 +1,16 @@
 import os
-import typer
+import subprocess
 from pathlib import Path
+
+import typer
 from rich.console import Console
+
+from h.utils import vscode_utils
 from h.utils.file_utils import create_temp_file
 from h.utils.logger import get_logger
-from h.utils import vscode_utils
-import subprocess
 
 logger = get_logger(__name__)
+
 
 def add_merge_files(app: typer.Typer, name: str) -> None:
     @app.command(name=name)
@@ -23,7 +26,7 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
             for root, _, files in os.walk(directory):
                 for file in files:
                     file_path = Path(root) / file
-                    
+
                     # Check if the file is ignored by git
                     try:
                         result = subprocess.run(
@@ -38,8 +41,37 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
                     except subprocess.CalledProcessError:
                         # git check-ignore returns an error if the file is not ignored
                         pass
-                    
-                    if file.endswith((".py", ".js", ".ts", ".go", ".rs", ".java", ".c", ".cpp", ".h", ".hpp", ".cs", ".swift", ".kt", ".rb", ".php", ".html", ".css", ".scss", ".less", ".json", ".yaml", ".yml", ".toml", ".ini", ".txt", ".md")):
+
+                    if file.endswith(
+                        (
+                            ".py",
+                            ".js",
+                            ".ts",
+                            ".go",
+                            ".rs",
+                            ".java",
+                            ".c",
+                            ".cpp",
+                            ".h",
+                            ".hpp",
+                            ".cs",
+                            ".swift",
+                            ".kt",
+                            ".rb",
+                            ".php",
+                            ".html",
+                            ".css",
+                            ".scss",
+                            ".less",
+                            ".json",
+                            ".yaml",
+                            ".yml",
+                            ".toml",
+                            ".ini",
+                            ".txt",
+                            ".md",
+                        )
+                    ):
                         with open(file_path, "r") as f:
                             merged_content += f"## File: {file_path}\n"
                             merged_content += f.read() + "\n"
@@ -47,7 +79,9 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
             temp_file = create_temp_file(
                 filename="merged_files.txt", content=merged_content
             )
-            console.print(f"\n[bold]Merged Files File: [blue]{temp_file}[/blue][/bold]\n\n")
+            console.print(
+                f"\n[bold]Merged Files File: [blue]{temp_file}[/blue][/bold]\n\n"
+            )
             vscode_utils.open_file_with_vscode(temp_file)
         except Exception as e:
             logger.error("merge_files.failed", error=str(e))

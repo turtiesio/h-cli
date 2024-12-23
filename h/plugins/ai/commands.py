@@ -1,6 +1,8 @@
 import typer
 from typing_extensions import Annotated
+
 from h.utils.ai import get_ai_response
+
 
 def add_ai(app: typer.Typer, name: str):
     @app.command(name=name, help="Ask a question to an AI model")
@@ -11,5 +13,5 @@ def add_ai(app: typer.Typer, name: str):
     ):
         if question is None:
             question = typer.prompt("What is your question?")
-        
+
         print(get_ai_response(question))
