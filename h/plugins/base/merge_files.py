@@ -12,7 +12,7 @@ from h.utils.logger import get_logger
 logger = get_logger(__name__)
 
 
-IGNORED_FILES = ["uv.lock", "package.lock"]
+IGNORED_FILES = ["uv.lock", "package.lock", "yarn.lock"]
 
 def add_merge_files(app: typer.Typer, name: str) -> None:
     @app.command(name=name)
