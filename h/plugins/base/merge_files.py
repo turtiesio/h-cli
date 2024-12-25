@@ -12,6 +12,8 @@ from h.utils.logger import get_logger
 logger = get_logger(__name__)
 
 
+IGNORED_FILES = ["uv.lock", "package.lock"]
+
 def add_merge_files(app: typer.Typer, name: str) -> None:
     @app.command(name=name)
     def merge_files(
@@ -23,58 +25,23 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
         console = Console()
         merged_content = ""
         try:
-            for root, _, files in os.walk(directory):
-                for file in files:
-                    file_path = Path(root) / file
+            result = subprocess.run(
+                ["git", "ls-files", "--directory", directory],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            git_files = result.stdout.splitlines()
 
-                    # Check if the file is ignored by git
-                    try:
-                        result = subprocess.run(
-                            ["git", "check-ignore", str(file_path)],
-                            capture_output=True,
-                            text=True,
-                            check=True,
-                        )
-                        if result.stdout.strip():
-                            logger.debug(f"Ignoring file: {file_path} (git ignored)")
-                            continue  # Skip the file if it's ignored by git
-                    except subprocess.CalledProcessError:
-                        # git check-ignore returns an error if the file is not ignored
-                        pass
+            for file_path_str in git_files:
+                if file_path_str.split("/")[-1] in IGNORED_FILES:
+                    logger.info(f"Ignoring file: {file_path_str} (ignored)")
+                    continue
 
-                    if file.endswith(
-                        (
-                            ".py",
-                            ".js",
-                            ".ts",
-                            ".go",
-                            ".rs",
-                            ".java",
-                            ".c",
-                            ".cpp",
-                            ".h",
-                            ".hpp",
-                            ".cs",
-                            ".swift",
-                            ".kt",
-                            ".rb",
-                            ".php",
-                            ".html",
-                            ".css",
-                            ".scss",
-                            ".less",
-                            ".json",
-                            ".yaml",
-                            ".yml",
-                            ".toml",
-                            ".ini",
-                            ".txt",
-                            ".md",
-                        )
-                    ):
-                        with open(file_path, "r") as f:
-                            merged_content += f"## File: {file_path}\n"
-                            merged_content += f.read() + "\n"
+                file_path = Path(directory) / file_path_str
+                with open(file_path, "r") as f:
+                    merged_content += f"## File: {file_path}\n"
+                    merged_content += f.read() + "\n"
 
             temp_file = create_temp_file(
                 filename="merged_files.txt", content=merged_content
