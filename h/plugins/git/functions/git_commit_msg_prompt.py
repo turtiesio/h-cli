@@ -169,6 +169,8 @@ _PROMPT = """You are an expert in writing Conventional Commit messages. Follow t
 *  **Each line must be less than 100 characters. Use newline characters to separate paragraphs**
 *  **Give me plain text instead of markdown**
 *  **LINES SHOULD NOT BE LONGER THAN 100 CHARACTERS!!!!!!!!!!!**
+*  **SHORT AND CONCISE RESPONSE**
+*  **READABILITY IS VERY IMPORTANT**
 
 **Recent Commits**
 
