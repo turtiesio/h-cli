@@ -38,13 +38,13 @@ h --verbose
 h version
 ```
 
-## Features
+## 기능
 
-- Git commit message prompt (`h gp`)
-- Display help (`h --help`)
-- Verbose logging (`h --verbose`)
-- Display version (`h version`)
-- Ask a question to an AI model (`h ai`)
+- Git 커밋 메시지 프롬프트 (`h gp`)
+- 도움말 표시 (`h --help`)
+- 상세 로깅 (`h --verbose`)
+- 버전 표시 (`h version`)
+- AI 모델에 질문 (`h ai`)
 
 ## 개요
 
@@ -130,30 +130,30 @@ make test
 make lint
 ```
 
-## AI Module
+## AI 모듈
 
-This module provides an interface for interacting with different AI models.
+이 모듈은 다양한 AI 모델과 상호 작용하기 위한 인터페이스를 제공합니다.
 
-### Usage
+### 사용법
 
-To use the AI module, you can import the `AIInterface` and its implementations:
+AI 모듈을 사용하려면 `AIInterface`와 그 구현체를 임포트하면 됩니다.
 
 ```python
 from h.utils.ai import GeminiAI, OpenAI
 
-# Example usage with Gemini
+# Gemini 사용 예시
 gemini_ai = GeminiAI()
-prompt = "Write a short poem about the moon."
+prompt = "달에 대한 짧은 시를 써주세요."
 response = gemini_ai.generate_text(prompt)
 print(response)
 
-# Example usage with OpenAI (placeholder)
+# OpenAI 사용 예시 (플레이스홀더)
 openai_ai = OpenAI()
-prompt = "Write a short story about a cat."
+prompt = "고양이에 대한 짧은 이야기를 써주세요."
 response = openai_ai.generate_text(prompt)
 print(response)
 ```
 
-Currently, only the `GeminiAI` implementation is available. The `OpenAI` implementation is a placeholder and will be added later.
+현재는 `GeminiAI` 구현만 사용할 수 있습니다. `OpenAI` 구현은 플레이스홀더이며 나중에 추가될 예정입니다.
 
-To use the `GeminiAI` you need to set the `GOOGLE_API_KEY` environment variable.
+`GeminiAI`를 사용하려면 `GOOGLE_API_KEY` 환경 변수를 설정해야 합니다.
