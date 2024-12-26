@@ -10,9 +10,9 @@ INFO := @printf "$(BLUE)%s$(NC)\n"
 # Command line arguments
 ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 
-.PHONY: all clean install test lint format check help run install-global uninstall-global
+.PHONY: all clean setup test lint format check help run install-global uninstall-global
 
-install:  ## Install dependencies using uv
+setup:  ## Install dependencies using uv
 	$(INFO) "Installing dependencies..."
 	@command -v uv >/dev/null 2>&1 || \
 		{ echo "uv is not installed. Installing..."; \
