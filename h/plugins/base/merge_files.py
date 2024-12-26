@@ -20,6 +20,9 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
         directory: str = typer.Option(
             ".", "--dir", "-d", help="Directory to merge files from"
         ),
+        exclude: list[str] = typer.Option(
+            [], "--exclude", "-e", help="Files and directories to exclude"
+        ),
     ) -> None:
         """Merges all source files under a specified directory into a temporary file."""
         console = Console()
@@ -34,11 +37,14 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
             git_files = result.stdout.splitlines()
 
             for file_path_str in git_files:
-                if file_path_str.split("/")[-1] in IGNORED_FILES:
-                    logger.info(f"Ignoring file: {file_path_str} (ignored)")
+                segments = file_path_str.split("/")
+                
+                if any(seg in (IGNORED_FILES + exclude) for seg in segments):
+                    logger.info(f"Ignoring file: {file_path_str}")
                     continue
-
+                
                 file_path = Path(directory) / file_path_str
+                
                 try:
                     with open(file_path, "r") as f:
                         merged_content += f"## File: {file_path}\n"

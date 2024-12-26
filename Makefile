@@ -22,7 +22,7 @@ install:  ## Install dependencies using uv
 
 install-global: clean  ## Install h-cli globally using pipx
 	$(INFO) "Installing h-cli globally..."
-	@pipx install . --force --python python3.12
+	@pipx install . --force --python python3
 
 uninstall-global:  ## Uninstall h-cli globally
 	$(INFO) "Uninstalling h-cli globally..."
