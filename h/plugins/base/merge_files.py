@@ -39,9 +39,13 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
                     continue
 
                 file_path = Path(directory) / file_path_str
-                with open(file_path, "r") as f:
-                    merged_content += f"## File: {file_path}\n"
-                    merged_content += f.read() + "\n"
+                try:
+                    with open(file_path, "r") as f:
+                        merged_content += f"## File: {file_path}\n"
+                        merged_content += f.read() + "\n"
+                except UnicodeDecodeError:
+                    logger.warn(f"Skipping file due to encoding error: {file_path}")
+                    continue
 
             temp_file = create_temp_file(
                 filename="merged_files.txt", content=merged_content
