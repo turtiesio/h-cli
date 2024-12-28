@@ -12,10 +12,9 @@ from .openai import OpenAIAI
 def get_ai_response(prompt: str) -> str:
     """Get AI response for the given prompt."""
     config = get_config()
-    if not config.ai_provider:
-        raise ValueError("AI provider not configured")
-
+    
     ai: Union[GeminiAI, OpenAIAI]
+    
     if config.ai_provider == "gemini":
         if not config.gemini_api_key:
             raise ValueError("Gemini API key not configured")

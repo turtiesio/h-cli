@@ -12,7 +12,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 def get_config_path() -> Path:
     """Get the path to the config file."""
-    config_dir = Path("config")
+    # Get absolute path to config directory relative to this file
+    config_dir = Path(__file__).parent.parent / "config"
     return config_dir / "default.yaml"
 
 
@@ -27,6 +28,8 @@ def copy_default_config_if_not_exists() -> None:
     if not global_config_path.exists():
         global_config_path.parent.mkdir(parents=True, exist_ok=True)
         default_config_path = get_config_path()
+        print(f"Copying config from: {default_config_path}")
+        print(f"Copying config to: {global_config_path}")
         shutil.copy2(default_config_path, global_config_path)
 
 
@@ -68,8 +71,8 @@ class Config(BaseSettings):
     openrouter_api_key: Optional[str] = Field(
         default=None, description="API key for OpenRouter"
     )
-    ai_provider: Optional[str] = Field(
-        default=None, description="AI provider to use (gemini or openai)"
+    ai_provider: str = Field(
+        default="gemini", description="AI provider to use (gemini or openai)"
     )
     openai_api_key: Optional[str] = Field(
         default=None, description="API key for OpenAI"
