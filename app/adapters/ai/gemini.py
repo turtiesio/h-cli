@@ -1,6 +1,7 @@
 import os
+from typing import Any, Dict
 
-import google.generativeai as genai
+import google.generativeai as genai  # type: ignore
 
 from .base import AIInterface
 
@@ -20,7 +21,7 @@ class GeminiAI(AIInterface):
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel("gemini-2.0-flash-exp")
 
-    def generate_text(self, prompt: str, **kwargs) -> str:
+    def generate_text(self, prompt: str, **kwargs: Dict[str, Any]) -> str:
         """
         Generates text using the Gemini model.
 
@@ -33,4 +34,4 @@ class GeminiAI(AIInterface):
         """
         chat = self.model.start_chat()
         response = chat.send_message(prompt, **kwargs)
-        return response.text
+        return str(response.text)

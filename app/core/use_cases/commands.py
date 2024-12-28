@@ -28,7 +28,6 @@ def get_context_data() -> Dict[str, Any]:
 def version_callback(value: bool) -> None:
     """Print version and exit."""
     if value:
-        from h import __version__
 
         console.print(f"h-cli version: {__version__}")
         raise typer.Exit()

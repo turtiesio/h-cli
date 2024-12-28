@@ -56,3 +56,6 @@ mypy_path = "."
 
 [tool.hatch.build.targets.wheel]
 packages = ["h", "app"]
+
+[dependency-groups]
+dev = []

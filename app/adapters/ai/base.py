@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, List
+from typing import Any, Dict, List
 
 
 class AIInterface(ABC):
@@ -8,7 +8,7 @@ class AIInterface(ABC):
     """
 
     @abstractmethod
-    def generate_text(self, prompt: str, **kwargs) -> str:
+    def generate_text(self, prompt: str, **kwargs: Dict[str, Any]) -> str:
         """
         Generates text based on the given prompt.
 

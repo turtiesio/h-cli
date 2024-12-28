@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from .base import AIInterface
 
 
@@ -13,7 +15,7 @@ class OpenAIAI(AIInterface):
         if not api_key:
             raise ValueError("OpenAI API key not set.")
 
-    def generate_text(self, prompt: str, **kwargs) -> str:
+    def generate_text(self, prompt: str, **kwargs: Dict[str, Any]) -> str:
         """
         Generates text using the OpenAI model.
 

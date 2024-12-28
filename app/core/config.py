@@ -68,11 +68,17 @@ class Config(BaseSettings):
     openrouter_api_key: Optional[str] = Field(
         default=None, description="API key for OpenRouter"
     )
+    ai_provider: Optional[str] = Field(
+        default=None, description="AI provider to use (gemini or openai)"
+    )
+    openai_api_key: Optional[str] = Field(
+        default=None, description="API key for OpenAI"
+    )
 
     @classmethod
     def from_yaml(cls, config_path: Path, **kwargs: Any) -> "Config":
         """Load configuration from YAML file."""
-        config = {}
+        config: Dict[str, Any] = {}
         if config_path.exists():
             with open(config_path, "r", encoding="utf-8") as f:
                 config = yaml.safe_load(f) or {}

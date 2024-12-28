@@ -3,15 +3,19 @@
 import subprocess
 from typing import List
 
-from app.frameworks.logger import setup_logger as DLogger
+from structlog.stdlib import BoundLogger
+
+from app.frameworks.logger import setup_logger
 
 from .exceptions import GitError
+
+logger = setup_logger(__name__)
 
 
 class GitCommands:
     """Git 명령어 실행을 위한 클래스."""
 
-    def __init__(self, logger: DLogger) -> None:
+    def __init__(self, logger: BoundLogger) -> None:
         """초기화.
 
         Args:
