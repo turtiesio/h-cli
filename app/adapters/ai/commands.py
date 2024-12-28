@@ -3,7 +3,7 @@ from typing import Optional
 import typer  # type: ignore
 from typing_extensions import Annotated
 
-from h.utils.ai import get_ai_response
+from . import get_ai_response
 
 
 def add_ai(app: typer.Typer, name: str):

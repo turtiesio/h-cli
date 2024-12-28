@@ -35,7 +35,7 @@ Homepage = "https://github.com/yourusername/h-cli"
 Repository = "https://github.com/yourusername/h-cli.git"
 
 [project.scripts]
-h = "h.cli:app"
+h = "app.frameworks.cli:app"
 
 [tool.black]
 line-length = 88
@@ -55,4 +55,4 @@ explicit_package_bases = true
 mypy_path = "."
 
 [tool.hatch.build.targets.wheel]
-packages = ["h"]
+packages = ["h", "app"]

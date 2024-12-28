@@ -5,8 +5,8 @@ from urllib.parse import urlparse
 import typer
 from rich.console import Console
 
-from h.utils.logger import get_logger
-from h.utils.vscode_utils import open_file_with_vscode
+from app.frameworks.logger import setup_logger as get_logger
+from app.tools.vscode_utils import open_file_with_vscode
 
 logger = get_logger(__name__)
 

@@ -10,13 +10,13 @@ from rich.live import Live
 from rich.spinner import Spinner
 from rich.text import Text
 
-from h.config import get_config
-from h.plugins.git.commands import GitCommands
-from h.plugins.git.exceptions import GitError
-from h.utils.ai.gemini import GeminiAI
-from h.utils.file_utils import create_temp_file
-from h.utils.logger import get_logger
-from h.utils.vscode_utils import open_file_with_vscode
+from app.core.config import get_config
+from ..commands import GitCommands
+from ..exceptions import GitError
+from app.adapters.ai.gemini import GeminiAI
+from app.tools.file_utils import create_temp_file
+from app.frameworks.logger import setup_logger as get_logger
+from app.tools.vscode_utils import open_file_with_vscode
 
 logger = get_logger(__name__)
 

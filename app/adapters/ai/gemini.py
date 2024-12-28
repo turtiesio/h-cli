@@ -2,7 +2,7 @@ import os
 
 import google.generativeai as genai
 
-from h.utils.ai.base import AIInterface
+from .base import AIInterface
 
 
 class GeminiAI(AIInterface):

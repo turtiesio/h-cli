@@ -3,11 +3,11 @@ from tempfile import gettempdir, tempdir
 import typer
 from rich.console import Console
 
-from h.plugins.git.commands import GitCommands
-from h.plugins.git.exceptions import GitError
-from h.utils.file_utils import create_temp_file
-from h.utils.logger import get_logger
-from h.utils.vscode_utils import open_file_with_vscode
+from ..commands import GitCommands
+from ..exceptions import GitError
+from app.tools.file_utils import create_temp_file
+from app.frameworks.logger import setup_logger as get_logger
+from app.tools.vscode_utils import open_file_with_vscode
 
 logger = get_logger(__name__)
 

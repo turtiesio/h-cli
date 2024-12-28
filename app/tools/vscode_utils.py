@@ -5,9 +5,9 @@ from typing import Optional
 
 # editor list
 editors = [
-    "windsurf",
-    "cursor",
     "code",
+    "cursor",
+    "windsurf",
 ]
 
 

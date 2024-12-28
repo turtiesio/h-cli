@@ -1,7 +1,7 @@
-from h.utils.ai.base import AIInterface
+from .base import AIInterface
 
 
-class OpenAI(AIInterface):
+class OpenAIAI(AIInterface):
     """
     Placeholder for OpenAI implementation.
     """

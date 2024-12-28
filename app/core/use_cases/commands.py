@@ -4,9 +4,9 @@ import typer
 from click import get_current_context
 from rich.console import Console
 
-from h import __version__
-from h.config import load_config
-from h.logger import setup_logger
+from app import __version__
+from app.core.config import load_config
+from app.frameworks.logger import setup_logger
 
 console = Console()
 logger = setup_logger()

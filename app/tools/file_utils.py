@@ -1,9 +1,10 @@
 import os
 import tempfile
 
-from h.utils.logger import get_logger
+from app.frameworks.logger import setup_logger
 
-logger = get_logger(__name__)
+
+logger = setup_logger(__name__)
 
 
 def create_temp_file(

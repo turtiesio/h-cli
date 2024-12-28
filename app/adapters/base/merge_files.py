@@ -5,9 +5,9 @@ from pathlib import Path
 import typer
 from rich.console import Console
 
-from h.utils import vscode_utils
-from h.utils.file_utils import create_temp_file
-from h.utils.logger import get_logger
+from app.tools import vscode_utils
+from app.tools.file_utils import create_temp_file
+from app.frameworks.logger import setup_logger as get_logger
 
 logger = get_logger(__name__)
 
