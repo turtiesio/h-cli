@@ -1,7 +1,10 @@
 """AI adapters package."""
+
+from app.core.config import get_config
+
 from .gemini import GeminiAI
 from .openai import OpenAIAI
-from app.core.config import get_config
+
 
 def get_ai_response(prompt: str) -> str:
     """Get AI response for the given prompt."""
@@ -12,7 +15,8 @@ def get_ai_response(prompt: str) -> str:
         ai = OpenAIAI(config.openai_api_key)
     else:
         raise ValueError(f"Unsupported AI provider: {config.ai_provider}")
-    
+
     return ai.generate_text(prompt)
+
 
 __all__ = ["GeminiAI", "OpenAIAI", "get_ai_response"]

@@ -3,8 +3,9 @@
 import subprocess
 from typing import List
 
-from .exceptions import GitError
 from app.frameworks.logger import setup_logger as DLogger
+
+from .exceptions import GitError
 
 
 class GitCommands:

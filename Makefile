@@ -38,14 +38,14 @@ test: ## Run tests with coverage
 
 lint: ## Run linting (black, isort, mypy)
 	$(INFO) "Running linters..."
-	@uv run black h/ tests/
-	@uv run isort h/ tests/
-	@PYTHONPATH=. uv run mypy h/ tests/
+	@uv run black app/
+	@uv run isort app/
+	@PYTHONPATH=. uv run mypy app/
 
 format: ## Format code using black and isort
 	$(INFO) "Formatting code..."
-	@uv run black h/ tests/
-	@uv run isort h/ tests/
+	@uv run black app/
+	@uv run isort app/
 
 run: ## Run the CLI tool (use: make run -- --help)
 	$(INFO) "Running h-cli..."
