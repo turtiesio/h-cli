@@ -16,8 +16,7 @@ from app.frameworks.logger import setup_logger as get_logger
 from app.tools.file_utils import create_temp_file
 from app.tools.vscode_utils import open_file_with_vscode
 
-from ..commands import GitCommands
-from ..exceptions import GitError
+from .git_commands import GitCommands, GitError
 
 logger = get_logger(__name__)
 

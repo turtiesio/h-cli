@@ -1,9 +1,10 @@
 """AI adapters package."""
 
-from typing import Union
+from typing import Optional, Union
+import typer
+from typing_extensions import Annotated
 
 from app.core.config import get_config
-
 from .gemini import GeminiAI
 from .openai import OpenAIAI
 
@@ -29,4 +30,20 @@ def get_ai_response(prompt: str) -> str:
     return ai.generate_text(prompt)
 
 
-__all__ = ["GeminiAI", "OpenAIAI", "get_ai_response"]
+def add_ai(app: typer.Typer, name: str) -> None:
+    @app.command(name=name, help="Ask a question to an AI model")
+    def ai(  # type: ignore[misc]
+        question: Annotated[
+            Optional[str], typer.Argument(help="The question to ask the AI model")
+        ] = None,
+    ) -> None:
+        if question is None:
+            question = typer.prompt("What is your question?")
+
+        if question:
+            system_prompt = "You are a helpful assistant. Please provide a short and concise response for a developer. "
+            print(get_ai_response(system_prompt + question))
+        return None
+
+
+__all__ = ["GeminiAI", "OpenAIAI", "get_ai_response", "add_ai"]

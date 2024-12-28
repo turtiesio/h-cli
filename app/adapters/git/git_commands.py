@@ -1,13 +1,8 @@
-"""Git 명령어 실행을 위한 모듈."""
-
 import subprocess
 from typing import List
-
 from structlog.stdlib import BoundLogger
-
 from app.frameworks.logger import setup_logger
 
-from .exceptions import GitError
 
 logger = setup_logger(__name__)
 
@@ -109,3 +104,8 @@ class GitCommands:
     def list_files_command(self) -> str:
         """git ls-files 명령어 실행."""
         return self.run_command(["ls-files"])
+
+
+class GitError(Exception):
+    """Git 명령어 실행 중 발생하는 예외."""
+    pass
