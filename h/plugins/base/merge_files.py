@@ -14,6 +14,7 @@ logger = get_logger(__name__)
 
 IGNORED_FILES = ["uv.lock", "package.lock", "yarn.lock"]
 
+
 def add_merge_files(app: typer.Typer, name: str) -> None:
     @app.command(name=name)
     def merge_files(
@@ -38,13 +39,13 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
 
             for file_path_str in git_files:
                 segments = file_path_str.split("/")
-                
+
                 if any(seg in (IGNORED_FILES + exclude) for seg in segments):
                     logger.info(f"Ignoring file: {file_path_str}")
                     continue
-                
+
                 file_path = Path(directory) / file_path_str
-                
+
                 try:
                     with open(file_path, "r") as f:
                         merged_content += f"## File: {file_path}\n"
