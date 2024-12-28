@@ -46,12 +46,16 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
 
                 file_path = Path(directory) / file_path_str
 
+                if not file_path.exists():
+                    logger.warning(f"File not found, skipping: {file_path}")
+                    continue
+                    
                 try:
                     with open(file_path, "r") as f:
                         merged_content += f"## File: {file_path}\n"
                         merged_content += f.read() + "\n"
                 except UnicodeDecodeError:
-                    logger.warn(f"Skipping file due to encoding error: {file_path}")
+                    logger.warning(f"Skipping file due to encoding error: {file_path}")
                     continue
 
             temp_file = create_temp_file(
