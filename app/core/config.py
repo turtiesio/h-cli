@@ -86,17 +86,21 @@ class Config(BaseSettings):
         return cls(**config, **kwargs)
 
 
+_config_instance: Optional[Config] = None
+
 def load_config(**kwargs: Any) -> Config:
     """Load configuration from YAML file."""
     copy_default_config_if_not_exists()
     config_path = get_global_config_path()
-    print(f"Using config file: {config_path}")
-
     return Config.from_yaml(config_path, **kwargs)
 
 
-_CONFIG = load_config()
-
-
 def get_config() -> Config:
-    return _CONFIG
+    """Get the configuration instance (singleton pattern)."""
+    global _config_instance
+    
+    if _config_instance is None:
+        _config_instance = load_config()
+        print(f"Using config file: {get_global_config_path()}")
+    
+    return _config_instance
