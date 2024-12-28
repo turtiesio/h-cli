@@ -6,6 +6,7 @@ from rich.console import Console
 from app.core.config import load_config
 from app.frameworks.logger import setup_logger
 from app.adapters.ai import add_ai
+from app.adapters.base.merge_files import add_merge_files
 from app.adapters.git import add_git_clone, add_git_commit_msg_prompt, add_git_tree
 from importlib.metadata import version
 
@@ -82,6 +83,7 @@ add_version(app, "version")
 add_git_commit_msg_prompt(app, "gp")
 add_git_tree(app, "gt")
 add_git_clone(app, "gc")
+add_merge_files(app, "m")
 add_ai(app, "ai")
 
 if __name__ == "__main__":
