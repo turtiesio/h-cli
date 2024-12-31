@@ -38,6 +38,22 @@ h --verbose
 h version
 ```
 
+### 파일 병합 (h m)
+
+```bash
+# 현재 디렉토리의 git-tracked 파일 병합
+h m
+
+# 특정 파일 병합
+h m --file file1.txt
+
+# 여러 파일 병합
+h m --file file1.txt file2.py
+
+# 디렉토리와 추가 파일 병합
+h m --dir src --file test.txt
+```
+
 ## 기능
 
 - Git 커밋 메시지 프롬프트 (`h gp`)
