@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 logger = get_logger(__name__)
 
 
-IGNORED_FILES = ["uv.lock", "package.lock", "yarn.lock"]
+IGNORED_FILES = ["uv.lock", "package-lock.json", "yarn.lock"]
 
 
 def process_file(file_path: Path, merged_content: str, logger: BoundLogger) -> str:
