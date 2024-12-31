@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 logger = get_logger(__name__)
 
 
-IGNORED_FILES = ["uv.lock", "package-lock.json", "yarn.lock"]
+IGNORED_FILES = ["uv.lock", "package-lock.json", "yarn.lock", ".gitignore"]
 
 
 def process_file(file_path: Path, merged_content: str, logger: BoundLogger) -> str:
@@ -65,13 +65,25 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
         try:
             # Process git-tracked files first
             try:
-                result = subprocess.run(
+                # files just created
+                result1 = subprocess.run(
                     ["git", "ls-files", "--others", "--exclude-standard"],
                     capture_output=True,
                     text=True,
                     check=True,
                 )
-                git_files = result.stdout.splitlines()
+                
+                # files already managed by git
+                result2 = subprocess.run(
+                    ["git", "ls-files"],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
+                
+                git_files = result1.stdout.splitlines() + result2.stdout.splitlines()
+                
+                console.print(f"\n[bold]Git Files:[/bold]\n{git_files}")
 
                 # Process git-tracked files
                 for file_path_str in git_files:
