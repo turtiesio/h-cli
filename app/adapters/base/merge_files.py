@@ -80,7 +80,7 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
                         logger.info(f"Ignoring file: {file_path_str}")
                         continue
                         
-                    file_path = Path(directory) / file_path_str
+                    file_path = Path(".") / file_path_str
                     merged_content = process_file(file_path, merged_content, logger)
 
             except subprocess.CalledProcessError:
