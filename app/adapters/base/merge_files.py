@@ -51,9 +51,6 @@ def process_file(file_path: Path, merged_content: str, logger: BoundLogger) -> s
 def add_merge_files(app: typer.Typer, name: str) -> None:
     @app.command(name=name)
     def merge_files(
-        directory: str = typer.Option(
-            ".", "--dir", "-d", help="Directory to merge files from"
-        ),
         exclude: list[str] = typer.Option(
             [], "--exclude", "-e", help="Files and directories to exclude"
         ),
@@ -69,7 +66,7 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
             # Process git-tracked files first
             try:
                 result = subprocess.run(
-                    ["git", "ls-files", "--directory", directory, "--others", "--exclude-standard"],
+                    ["git", "ls-files", "--others", "--exclude-standard"],
                     capture_output=True,
                     text=True,
                     check=True,
