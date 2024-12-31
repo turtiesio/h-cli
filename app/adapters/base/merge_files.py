@@ -18,7 +18,38 @@ logger = get_logger(__name__)
 
 
 IGNORED_FILES = ["uv.lock", "package-lock.json", "yarn.lock", ".gitignore"]
+IGNORED_EXTENSIONS = [".svg", ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".ico", ".webp"]
 
+def is_binary_file(file_path: Path) -> bool:
+    """
+    Check if a file is binary by reading its first few thousand bytes
+    and looking for null bytes.
+    
+    Args:
+        file_path: Path to the file
+        
+    Returns:
+        bool: True if the file appears to be binary, False otherwise
+    """
+    try:
+        chunk_size = 8192  # Read 8kb at a time
+        with open(file_path, 'rb') as f:
+            chunk = f.read(chunk_size)
+            
+        # Files with null bytes are usually binary
+        if b'\x00' in chunk:
+            return True
+            
+        # Try to decode as text - if it fails, likely binary
+        try:
+            chunk.decode('utf-8')
+            return False
+        except UnicodeDecodeError:
+            return True
+            
+    except Exception as e:
+        logger.warning(f"Error checking if file is binary {file_path}: {str(e)}")
+        return True  # Assume binary if we can't check properly
 
 def process_file(file_path: Path, merged_content: str, logger: BoundLogger) -> str:
     """Process a single file and append its content to merged_content.
@@ -34,6 +65,16 @@ def process_file(file_path: Path, merged_content: str, logger: BoundLogger) -> s
     try:
         if not file_path.exists():
             logger.warning(f"File not found, skipping: {file_path}")
+            return merged_content
+            
+        # Skip files with ignored extensions
+        if any(file_path.name.lower().endswith(ext) for ext in IGNORED_EXTENSIONS):
+            logger.info(f"Skipping file with ignored extension: {file_path}")
+            return merged_content
+            
+        # Skip binary files
+        if is_binary_file(file_path):
+            logger.info(f"Skipping binary file: {file_path}")
             return merged_content
             
         with open(file_path, "r") as f:
