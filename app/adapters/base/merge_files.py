@@ -69,7 +69,7 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
             # Process git-tracked files first
             try:
                 result = subprocess.run(
-                    ["git", "ls-files", "--others", "--exclude-standard", "--directory", directory],
+                    ["git", "ls-files", "--directory", directory, "--others", "--exclude-standard"],
                     capture_output=True,
                     text=True,
                     check=True,
