@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 logger = get_logger(__name__)
 
 
-IGNORED_FILES = ["uv.lock", "package-lock.json", "yarn.lock", ".gitignore"]
+IGNORED_FILES = ["uv.lock", "package-lock.json", "yarn.lock", ".gitignore", ".yarn"]
 IGNORED_EXTENSIONS = [".svg", ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".ico", ".webp"]
 
 def is_binary_file(file_path: Path) -> bool:
