@@ -1,14 +1,15 @@
+from importlib.metadata import version
 from typing import Optional
+
 import typer
 from click import get_current_context
 from rich.console import Console
 
-from app.core.config import load_config
-from app.frameworks.logger import setup_logger
 from app.adapters.ai import add_ai
 from app.adapters.base.merge_files import add_merge_files
 from app.adapters.git import add_git_clone, add_git_commit_msg_prompt, add_git_tree
-from importlib.metadata import version
+from app.core.config import load_config
+from app.frameworks.logger import setup_logger
 
 console = Console()
 logger = setup_logger()
@@ -65,7 +66,7 @@ def add_version(app: typer.Typer, name: str) -> None:
     @app.command(name=name)
     def version() -> None:
         """Show version information."""
-        version_str = version('h-cli')
+        version_str = version("h-cli")
         logger.info("cli.version", version=version_str)
         console.print(f"h-cli version: {version_str}")
 

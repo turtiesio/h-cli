@@ -8,7 +8,9 @@ import structlog
 from structlog.stdlib import BoundLogger
 
 
-def setup_logger(name: str = "h-cli", level: Optional[int] = None, pretty: bool = True) -> BoundLogger:
+def setup_logger(
+    name: str = "h-cli", level: Optional[int] = None, pretty: bool = True
+) -> BoundLogger:
     """Set up structured logging for the application.
 
     Args:
@@ -32,7 +34,11 @@ def setup_logger(name: str = "h-cli", level: Optional[int] = None, pretty: bool 
             structlog.processors.TimeStamper(fmt="iso"),
             structlog.processors.StackInfoRenderer(),
             structlog.processors.format_exc_info,
-            structlog.dev.ConsoleRenderer() if pretty else structlog.processors.JSONRenderer(),
+            (
+                structlog.dev.ConsoleRenderer()
+                if pretty
+                else structlog.processors.JSONRenderer()
+            ),
         ],
         context_class=dict,
         logger_factory=structlog.stdlib.LoggerFactory(),

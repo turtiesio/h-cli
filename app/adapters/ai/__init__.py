@@ -1,10 +1,12 @@
 """AI adapters package."""
 
 from typing import Optional, Union
+
 import typer
 from typing_extensions import Annotated
 
 from app.core.config import get_config
+
 from .gemini import GeminiAI
 from .openai import OpenAIAI
 
@@ -12,9 +14,9 @@ from .openai import OpenAIAI
 def get_ai_response(prompt: str) -> str:
     """Get AI response for the given prompt."""
     config = get_config()
-    
+
     ai: Union[GeminiAI, OpenAIAI]
-    
+
     if config.ai_provider == "gemini":
         if not config.gemini_api_key:
             raise ValueError("Gemini API key not configured")
