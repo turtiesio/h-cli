@@ -1,19 +1,20 @@
+import fnmatch
 import os
 import subprocess
 from pathlib import Path
 from typing import List, Optional
-import fnmatch
 
 import typer
+
 from app.frameworks.logger import setup_logger as get_logger
+from app.tools import vscode_utils
 from app.tools.file_utils import (
     create_temp_file,
-    write_file,
-    read_file,
     is_binary_file,
-    should_exclude_file
+    read_file,
+    should_exclude_file,
+    write_file,
 )
-from app.tools import vscode_utils
 
 logger = get_logger(__name__)
 
@@ -26,6 +27,7 @@ IGNORED_FILES = [
     ".terraform.lock.hcl",
 ]
 IGNORED_EXTENSIONS = [".svg", ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".ico", ".webp"]
+
 
 def get_git_tracked_files() -> List[Path]:
     """Get a list of files tracked by Git in the current directory."""
@@ -40,6 +42,7 @@ def get_git_tracked_files() -> List[Path]:
         return [Path(file) for file in result.stdout.splitlines()]
     except subprocess.CalledProcessError:
         return []
+
 
 def merge_files(
     exclude_patterns: Optional[List[str]] = None,
@@ -64,7 +67,9 @@ def merge_files(
             logger.info(f"Ignoring file: {file_path}")
             continue
 
-        if should_exclude_file(file_path, exclude_patterns, include_docs) or is_binary_file(file_path):
+        if should_exclude_file(
+            file_path, exclude_patterns, include_docs
+        ) or is_binary_file(file_path):
             continue
 
         try:
@@ -75,7 +80,9 @@ def merge_files(
 
     # Merge additional files
     for file_path in additional_files:
-        if should_exclude_file(file_path, exclude_patterns, include_docs) or is_binary_file(file_path):
+        if should_exclude_file(
+            file_path, exclude_patterns, include_docs
+        ) or is_binary_file(file_path):
             continue
 
         try:
@@ -85,6 +92,7 @@ def merge_files(
             logger.error(f"Error processing file {file_path}: {e}")
 
     return merged_content
+
 
 def add_merge_files(app: typer.Typer, name: str) -> None:
     @app.command(name=name)
@@ -103,10 +111,19 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
         ),
     ) -> None:
         """Merge files tracked by Git and additional files."""
-        merged_content = merge_files(
-            exclude_patterns=exclude,
-            additional_files=files,
-            include_docs=docs,  # Pass the flag value
+        seperator = "-" * 10
+
+        merged_content = (
+            "\n\n\n"
+            + seperator
+            + "Merged Files"
+            + seperator
+            + "\n\n\n"
+            + merge_files(
+                exclude_patterns=exclude,
+                additional_files=files,
+                include_docs=docs,  # Pass the flag value
+            )
         )
 
         if output:
