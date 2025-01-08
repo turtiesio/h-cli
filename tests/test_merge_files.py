@@ -43,6 +43,9 @@ def test_merge_files_with_input_files(setup_test_files):
     assert merged_file.exists()
     
     content = merged_file.read_text()
+    assert "## Directory Structure" in content
+    assert "file1.txt" in content
+    assert "file2.py" in content
     assert "File 1 content" in content
     assert "File 2 content" in content
 

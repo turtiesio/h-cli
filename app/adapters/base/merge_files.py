@@ -6,6 +6,7 @@ from typing import List, Optional
 import typer
 from typing_extensions import Annotated
 
+from app.adapters.git.git_commands import GitCommands
 from app.frameworks.logger import setup_logger as get_logger
 from app.tools import vscode_utils
 from app.tools.file_utils import (
@@ -59,6 +60,11 @@ def merge_files(
         additional_files = []
 
     merged_content = ""
+
+    # Get directory structure
+    git = GitCommands(logger)
+    directory_structure = git.get_directory_tree(depth=3)
+    merged_content += f"## Directory Structure\n{directory_structure}\n\n"
 
     # Merge Git-tracked files
     git_files = get_git_tracked_files(directory)
