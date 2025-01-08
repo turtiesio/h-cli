@@ -31,6 +31,33 @@
 - **`h m --file <file>`**: 특정 파일 병합
 - **`h m --docs`**: 마크다운 파일 포함 병합
 
+병합된 파일의 시작 부분에 디렉토리 구조가 표시되어 프로젝트 구조를 빠르게 파악할 수 있습니다.
+
+예시:
+
+```bash
+$ h m
+```
+
+출력:
+
+```
+## Directory Structure
+file1.txt
+file2.py
+scripts/
+    script1.sh
+    script2.sh
+
+## File: file1.txt
+File 1 content
+
+## File: file2.py
+File 2 content
+```
+
+디렉토리 구조는 Git 어댑터의 `get_directory_tree` 함수를 사용하여 생성되며, 최대 3단계 깊이까지 표시됩니다.
+
 ### **기본 명령어**
 
 - **`h --help`**: 도움말 표시

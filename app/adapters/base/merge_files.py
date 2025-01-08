@@ -61,13 +61,11 @@ def merge_files(
 
     merged_content = ""
 
-    # Get directory structure
+    # Get directory structure, respecting exclusions
     git = GitCommands(logger)
-    directory_structure = git.get_directory_tree(depth=3)
-    merged_content += f"## Directory Structure\n{directory_structure}\n\n"
-
-    # Merge Git-tracked files
     git_files = get_git_tracked_files(directory)
+    filtered_files = []
+
     for file_path in git_files:
         full_path = directory / file_path
         if any(
@@ -81,6 +79,15 @@ def merge_files(
         ) or is_binary_file(full_path):
             continue
 
+        filtered_files.append(file_path)
+
+    # Generate directory structure from filtered files
+    directory_structure = "\n".join(str(file) for file in filtered_files)
+    merged_content += f"## Directory Structure\n{directory_structure}\n\n"
+
+    # Merge Git-tracked files
+    for file_path in filtered_files:
+        full_path = directory / file_path
         try:
             content = read_file(full_path)
             merged_content += f"## File: {file_path}\n{content}\n"
