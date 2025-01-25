@@ -22,12 +22,14 @@ logger = get_logger(__name__)
 IGNORED_FILES = [
     "uv.lock",
     "package-lock.json",
+    "pnpm-lock.yaml",
     "yarn.lock",
     ".gitignore",
     ".yarn",
     ".terraform.lock.hcl",
 ]
 IGNORED_EXTENSIONS = [".svg", ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".ico", ".webp"]
+
 
 def get_git_tracked_files(directory: Path) -> List[Path]:
     """Get a list of files tracked by Git in the specified directory."""
@@ -43,6 +45,7 @@ def get_git_tracked_files(directory: Path) -> List[Path]:
         return [Path(file) for file in result.stdout.splitlines()]
     except subprocess.CalledProcessError:
         return []
+
 
 def merge_files(
     directory: Path,
@@ -68,9 +71,7 @@ def merge_files(
 
     for file_path in git_files:
         full_path = directory / file_path
-        if any(
-            seg in (IGNORED_FILES + exclude_patterns) for seg in full_path.parts
-        ):
+        if any(seg in (IGNORED_FILES + exclude_patterns) for seg in full_path.parts):
             logger.info(f"Ignoring file: {full_path}")
             continue
 
@@ -111,6 +112,7 @@ def merge_files(
             logger.error(f"Error processing file {file_path}: {e}")
 
     return merged_content
+
 
 def add_merge_files(app: typer.Typer, name: str) -> None:
     @app.command(name=name)
