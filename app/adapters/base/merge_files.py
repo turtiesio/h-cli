@@ -34,15 +34,17 @@ IGNORED_EXTENSIONS = [".svg", ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".ico", "
 def get_git_tracked_files(directory: Path) -> List[Path]:
     """Get a list of files tracked by Git in the specified directory."""
     try:
-        # Get both staged and unstaged files
+        # Use -c core.quotepath=false to prevent escaping non-ASCII characters
         result = subprocess.run(
-            ["git", "ls-files"],
+            ["git", "-c", "core.quotepath=false", "ls-files"],
             capture_output=True,
             text=True,
             check=True,
+            encoding="utf-8",
             cwd=directory,
         )
-        return [Path(file) for file in result.stdout.splitlines()]
+
+        return [Path(file) for file in result.stdout.split("\n") if file]
     except subprocess.CalledProcessError:
         return []
 
