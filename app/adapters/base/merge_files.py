@@ -2,6 +2,7 @@ import os
 import subprocess
 from pathlib import Path
 from typing import List, Optional
+from fnmatch import fnmatch
 
 import typer
 from typing_extensions import Annotated
@@ -49,9 +50,24 @@ def get_git_tracked_files(directory: Path) -> List[Path]:
         return []
 
 
+def should_include_file(file_path: Path, include_patterns: List[str]) -> bool:
+    """
+    Check if a file should be included based on glob patterns.
+
+    Returns True if:
+    - include_patterns is empty (include all)
+    - OR file matches at least one of the include patterns
+    """
+    if not include_patterns:
+        return True
+
+    return any(fnmatch(str(file_path), pattern) for pattern in include_patterns)
+
+
 def merge_files(
     directory: Path,
     exclude_patterns: Optional[List[str]] = None,
+    include_patterns: Optional[List[str]] = None,
     additional_files: Optional[List[Path]] = None,
     include_docs: bool = False,
     char_count: bool = False,
@@ -59,11 +75,13 @@ def merge_files(
     """
     Merge all files tracked by Git and additional files into a single string.
     Exclude binary files and files matching the exclude patterns.
+    Include only files matching include patterns if provided.
     If char_count is True, prepend each file name with its character count.
 
     Args:
         directory (Path): The directory to process files from
         exclude_patterns (Optional[List[str]]): Patterns to exclude from processing
+        include_patterns (Optional[List[str]]): Patterns to include in processing
         additional_files (Optional[List[Path]]): Additional files to include
         include_docs (bool): Whether to include documentation files
         char_count (bool): Whether to prepend each file name with its character count
@@ -73,6 +91,8 @@ def merge_files(
     """
     if exclude_patterns is None:
         exclude_patterns = []
+    if include_patterns is None:
+        include_patterns = []
     if additional_files is None:
         additional_files = []
 
@@ -92,6 +112,11 @@ def merge_files(
         if should_exclude_file(
             full_path, exclude_patterns, include_docs
         ) or is_binary_file(full_path):
+            continue
+
+        # Skip if it doesn't match any include pattern (when include patterns are provided)
+        if not should_include_file(file_path, include_patterns):
+            logger.info(f"Skipping file (not in include patterns): {full_path}")
             continue
 
         filtered_files.append(file_path)
@@ -135,6 +160,13 @@ def merge_files(
         ) or is_binary_file(file_path):
             continue
 
+        # Skip if it doesn't match any include pattern (when include patterns are provided)
+        if not should_include_file(file_path, include_patterns):
+            logger.info(
+                f"Skipping additional file (not in include patterns): {file_path}"
+            )
+            continue
+
         try:
             content = read_file(file_path)
             char_count_str = f"[{len(content)} chars] " if char_count else ""
@@ -150,6 +182,12 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
     def merge_files_command(
         exclude: List[str] = typer.Option(
             [], "--exclude", "-e", help="Glob patterns to exclude"
+        ),
+        include: List[str] = typer.Option(
+            [],
+            "--include",
+            "-i",
+            help="Glob patterns to include (if empty, all files are included)",
         ),
         files: List[Path] = typer.Option(
             [], "--file", "-f", help="Additional files to merge"
@@ -190,6 +228,7 @@ def add_merge_files(app: typer.Typer, name: str) -> None:
             + merge_files(
                 directory=directory,
                 exclude_patterns=exclude,
+                include_patterns=include,
                 additional_files=files,
                 include_docs=docs,
                 char_count=char_count,
