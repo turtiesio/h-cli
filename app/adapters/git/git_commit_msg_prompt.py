@@ -93,7 +93,8 @@ def add_git_commit_msg_prompt(app: typer.Typer, name: str) -> None:
                     f"\n[bold]Git Commit Command:[/bold]\n[green]{commit_message}[/green]"
                 )
 
-                git_commit_command = f'git commit -m "{commit_message}"'
+                escaped_message = commit_message.replace("!", "\\!")
+                git_commit_command = f'git commit -m "{escaped_message}"'
             except Exception as e:
                 console.print(f"\n[red]Error:[/red] {str(e)}")
                 console.print(
