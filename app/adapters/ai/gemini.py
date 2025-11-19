@@ -19,7 +19,7 @@ class GeminiAI(AIInterface):
             raise ValueError("Gemini API key not set.")
 
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel("gemini-2.5-flash-preview-05-20")
+        self.model = genai.GenerativeModel("gemini-2.5-flash")
 
     def generate_text(self, prompt: str, **kwargs: Dict[str, Any]) -> str:
         """
